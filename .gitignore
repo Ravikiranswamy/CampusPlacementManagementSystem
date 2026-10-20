@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+.neon
+node_modules/
+.env.local
+# Local environment secrets
+.env
+.env.*
+!.env.example
+
+# Neon local configuration
+.neon/
