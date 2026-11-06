@@ -1,0 +1,18 @@
+:root {
+  --navy: #0b1f3a;
+  --navy-2: #132e54;
+  --navy-3: #1d406f;
+  --gold: #c4a35a;
+  --gold-soft: #f4ecd8;
+  --bg: #f3f5f8;
+  --card: #ffffff;
+  --text: #1c2430;
+  --muted: #5c6b7a;
+  --line: #e1e6ee;
+  --sidebar-width: 268px;
+  --topbar-height: 72px;
+  --shadow: 0 10px 30px rgba(11, 31, 58, 0.08);
+  --font: "Source Sans 3", "Segoe UI", sans-serif;
+  --serif: "Source Serif 4", Georgia, serif;
+  --radius: 14px;
+}
