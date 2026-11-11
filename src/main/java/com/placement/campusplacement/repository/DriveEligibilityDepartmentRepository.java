@@ -15,3 +15,4 @@ public interface DriveEligibilityDepartmentRepository extends JpaRepository<Driv
            "WHERE ded.eligibility.eligibilityId = :eligibilityId")
     List<DriveEligibilityDepartment> findByEligibilityIdWithDept(@Param("eligibilityId") Long eligibilityId);
 }
+

@@ -72,3 +72,4 @@ public class Company {
     public void setIsActive(Boolean isActive)      { this.isActive = isActive; }
     public void setCreatedAt(LocalDateTime time)   { this.createdAt = time; }
 }
+

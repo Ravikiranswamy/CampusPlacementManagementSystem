@@ -40,3 +40,4 @@ public class DriveEligibilityResponse {
     public void setAdditionalCriteria(String additionalCriteria)                    { this.additionalCriteria = additionalCriteria; }
     public void setEligibleDepartments(List<DepartmentResponse> eligibleDepartments){ this.eligibleDepartments = eligibleDepartments; }
 }
+

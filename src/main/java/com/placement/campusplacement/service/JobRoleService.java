@@ -17,3 +17,4 @@ public interface JobRoleService {
 
     JobRoleResponse updateJobRole(Long id, JobRoleRequest request);
 }
+

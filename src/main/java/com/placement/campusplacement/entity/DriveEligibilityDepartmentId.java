@@ -43,3 +43,4 @@ public class DriveEligibilityDepartmentId implements Serializable {
         return Objects.hash(eligibilityId, departmentId);
     }
 }
+

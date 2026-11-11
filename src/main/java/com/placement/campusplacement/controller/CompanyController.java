@@ -55,3 +55,4 @@ public class CompanyController {
         return ResponseEntity.ok(ApiResponse.success("Company status updated successfully"));
     }
 }
+

@@ -38,3 +38,4 @@ public class DriveEligibilityRequest {
     public void setEligibleDepartmentIds(List<Long> eligibleDepartmentIds)   { this.eligibleDepartmentIds = eligibleDepartmentIds; }
     public void setAdditionalCriteria(String additionalCriteria)             { this.additionalCriteria = additionalCriteria; }
 }
+

@@ -41,3 +41,4 @@ public class JobRoleRequest {
     public void setWorkLocation(String workLocation) { this.workLocation = workLocation; }
     public void setJobDescription(String description){ this.jobDescription = description; }
 }
+

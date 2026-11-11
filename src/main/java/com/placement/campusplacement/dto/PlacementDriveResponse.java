@@ -62,3 +62,4 @@ public class PlacementDriveResponse {
     public void setCreatedAt(LocalDateTime createdAt)                             { this.createdAt = createdAt; }
     public void setEligibility(DriveEligibilityResponse eligibility)               { this.eligibility = eligibility; }
 }
+

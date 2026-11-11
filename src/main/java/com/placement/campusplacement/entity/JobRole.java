@@ -69,3 +69,4 @@ public class JobRole {
     public void setIsActive(Boolean isActive)        { this.isActive = isActive; }
     public void setCreatedAt(LocalDateTime createdAt){ this.createdAt = createdAt; }
 }
+

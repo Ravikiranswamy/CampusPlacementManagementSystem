@@ -35,3 +35,4 @@ public interface PlacementDriveRepository extends JpaRepository<PlacementDrive, 
            "ORDER BY d.registrationDeadline ASC")
     List<PlacementDrive> findByStatusWithDetails(@Param("status") String status);
 }
+

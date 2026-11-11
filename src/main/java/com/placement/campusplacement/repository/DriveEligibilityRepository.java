@@ -9,3 +9,4 @@ public interface DriveEligibilityRepository extends JpaRepository<DriveEligibili
 
     Optional<DriveEligibility> findByDrive_DriveId(Long driveId);
 }
+

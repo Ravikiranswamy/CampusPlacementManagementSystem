@@ -55,3 +55,4 @@ public class DriveCreateRequest {
     public void setCreatedByUserId(Long createdByUserId)                       { this.createdByUserId = createdByUserId; }
     public void setEligibility(DriveEligibilityRequest eligibility)            { this.eligibility = eligibility; }
 }
+

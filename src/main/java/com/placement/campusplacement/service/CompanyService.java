@@ -17,3 +17,4 @@ public interface CompanyService {
 
     void toggleCompanyStatus(Long id);
 }
+

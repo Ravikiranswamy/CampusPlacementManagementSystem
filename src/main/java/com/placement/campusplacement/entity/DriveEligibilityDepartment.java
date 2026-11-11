@@ -65,3 +65,4 @@ public class DriveEligibilityDepartment {
     public void setIsMandatory(Boolean isMandatory)              { this.isMandatory = isMandatory; }
     public void setAddedAt(LocalDateTime addedAt)                { this.addedAt = addedAt; }
 }
+

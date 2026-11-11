@@ -67,3 +67,4 @@ public class DriveEligibility {
     public void setCreatedAt(LocalDateTime createdAt)                                 { this.createdAt = createdAt; }
     public void setEligibleDepartments(List<DriveEligibilityDepartment> departments)  { this.eligibleDepartments = departments; }
 }
+

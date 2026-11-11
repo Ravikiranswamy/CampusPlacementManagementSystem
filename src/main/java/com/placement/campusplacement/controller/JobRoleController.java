@@ -55,3 +55,4 @@ public class JobRoleController {
         return ResponseEntity.ok(ApiResponse.success("Job role updated successfully", updated));
     }
 }
+

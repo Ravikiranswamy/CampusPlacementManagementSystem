@@ -66,3 +66,4 @@ public class PlacementDriveController {
         return ResponseEntity.ok(ApiResponse.success("Drive status updated successfully", updated));
     }
 }
+

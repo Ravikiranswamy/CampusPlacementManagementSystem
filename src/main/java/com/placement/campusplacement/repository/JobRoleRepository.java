@@ -19,3 +19,4 @@ public interface JobRoleRepository extends JpaRepository<JobRole, Long> {
     @Query("SELECT j FROM JobRole j JOIN FETCH j.company")
     List<JobRole> findAllWithDetails();
 }
+

@@ -20,3 +20,4 @@ public interface PlacementDriveService {
 
     PlacementDriveResponse updateDriveStatus(Long id, String status);
 }
+
