@@ -28,3 +28,4 @@ public class StudentSkillRequest {
     public void setProficiencyLevel(String proficiencyLevel) { this.proficiencyLevel = proficiencyLevel; }
     public void setCertificationUrl(String certificationUrl) { this.certificationUrl = certificationUrl; }
 }
+

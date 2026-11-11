@@ -17,3 +17,4 @@ public interface StudentSkillRepository extends JpaRepository<StudentSkill, Stud
 
     void deleteById(StudentSkillId id);
 }
+

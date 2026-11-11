@@ -37,3 +37,4 @@ public class DepartmentController {
         return ResponseEntity.ok(ApiResponse.success("Departments retrieved successfully", list));
     }
 }
+

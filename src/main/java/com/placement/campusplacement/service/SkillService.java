@@ -13,3 +13,4 @@ public interface SkillService {
 
     SkillResponse createSkill(SkillCreateRequest request);
 }
+

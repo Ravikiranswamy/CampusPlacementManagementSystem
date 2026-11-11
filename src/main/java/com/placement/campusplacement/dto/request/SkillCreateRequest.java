@@ -24,3 +24,4 @@ public class SkillCreateRequest {
     public void setCategory(String category) { this.category = category; }
     public void setDescription(String description) { this.description = description; }
 }
+

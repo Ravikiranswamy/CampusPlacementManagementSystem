@@ -56,3 +56,4 @@ public class SkillController {
                 .body(ApiResponse.success("Skill created successfully", created));
     }
 }
+

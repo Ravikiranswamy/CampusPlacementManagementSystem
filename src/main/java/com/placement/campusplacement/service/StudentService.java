@@ -24,3 +24,4 @@ public interface StudentService {
 
     void removeStudentSkill(Long studentId, Long skillId);
 }
+

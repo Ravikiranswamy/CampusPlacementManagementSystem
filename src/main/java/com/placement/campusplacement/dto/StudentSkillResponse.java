@@ -41,3 +41,4 @@ public class StudentSkillResponse {
     public void setCertificationUrl(String certificationUrl) { this.certificationUrl = certificationUrl; }
     public void setAddedAt(LocalDateTime addedAt) { this.addedAt = addedAt; }
 }
+

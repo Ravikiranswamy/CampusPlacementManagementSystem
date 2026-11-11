@@ -37,3 +37,4 @@ public class DepartmentResponse {
     public void setOfficeEmail(String officeEmail) { this.officeEmail = officeEmail; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
+

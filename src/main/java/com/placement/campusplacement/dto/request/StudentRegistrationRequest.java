@@ -77,3 +77,4 @@ public class StudentRegistrationRequest {
     public void setPhone(String phone)                     { this.phone = phone; }
     public void setResumeUrl(String resumeUrl)             { this.resumeUrl = resumeUrl; }
 }
+
