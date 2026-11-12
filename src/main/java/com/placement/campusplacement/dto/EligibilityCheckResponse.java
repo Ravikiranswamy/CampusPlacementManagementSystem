@@ -75,3 +75,4 @@ public class EligibilityCheckResponse {
     public void setAllowedMaxBacklogs(Integer allowedMaxBacklogs)         { this.allowedMaxBacklogs = allowedMaxBacklogs; }
     public void setReasons(List<String> reasons)                           { this.reasons = reasons; }
 }
+

@@ -66,3 +66,4 @@ public class ApplicationResponse {
     public void setEligibilityVerified(Boolean eligibilityVerified)  { this.eligibilityVerified = eligibilityVerified; }
     public void setRemarks(String remarks)                           { this.remarks = remarks; }
 }
+

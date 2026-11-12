@@ -18,3 +18,4 @@ public interface OfferService {
 
     List<OfferResponse> getAllOffers();
 }
+

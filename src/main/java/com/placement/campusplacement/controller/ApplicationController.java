@@ -98,3 +98,4 @@ public class ApplicationController {
         return ResponseEntity.ok(ApiResponse.success("Application withdrawn successfully"));
     }
 }
+

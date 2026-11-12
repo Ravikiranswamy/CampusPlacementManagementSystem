@@ -16,3 +16,4 @@ public class OfferStatusUpdateRequest {
 
     public void setOfferStatus(String offerStatus) { this.offerStatus = offerStatus; }
 }
+

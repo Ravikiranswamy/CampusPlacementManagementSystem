@@ -33,3 +33,4 @@ public interface PlacementRestrictionRepository extends JpaRepository<PlacementR
            "ORDER BY r.createdAt DESC")
     List<PlacementRestriction> findAllWithDetails();
 }
+

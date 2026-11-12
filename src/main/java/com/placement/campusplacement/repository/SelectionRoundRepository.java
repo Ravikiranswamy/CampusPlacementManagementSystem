@@ -27,3 +27,4 @@ public interface SelectionRoundRepository extends JpaRepository<SelectionRound, 
            "WHERE r.roundId = :id")
     Optional<SelectionRound> findByIdWithDetails(@Param("id") Long id);
 }
+

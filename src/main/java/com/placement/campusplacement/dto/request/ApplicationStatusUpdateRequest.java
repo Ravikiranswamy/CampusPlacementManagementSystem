@@ -22,3 +22,4 @@ public class ApplicationStatusUpdateRequest {
     public void setStatus(String status)   { this.status = status; }
     public void setRemarks(String remarks) { this.remarks = remarks; }
 }
+

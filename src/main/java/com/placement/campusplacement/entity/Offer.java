@@ -75,3 +75,4 @@ public class Offer {
     public void setAdditionalInfo(String additionalInfo)       { this.additionalInfo = additionalInfo; }
     public void setCreatedAt(LocalDateTime createdAt)          { this.createdAt = createdAt; }
 }
+

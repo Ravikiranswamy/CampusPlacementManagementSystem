@@ -75,3 +75,4 @@ public class PlacementRestriction {
     public void setUnblockReason(String unblockReason)     { this.unblockReason = unblockReason; }
     public void setCreatedAt(LocalDateTime createdAt)      { this.createdAt = createdAt; }
 }
+

@@ -44,3 +44,4 @@ public class SelectionRoundRequest {
     public void setScheduledAt(LocalDateTime scheduledAt)      { this.scheduledAt = scheduledAt; }
     public void setRoundStatus(String roundStatus)             { this.roundStatus = roundStatus; }
 }
+

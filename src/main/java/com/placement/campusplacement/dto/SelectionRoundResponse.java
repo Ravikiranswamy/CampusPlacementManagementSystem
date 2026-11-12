@@ -39,3 +39,4 @@ public class SelectionRoundResponse {
     public void setRoundStatus(String roundStatus)             { this.roundStatus = roundStatus; }
     public void setCreatedAt(LocalDateTime createdAt)          { this.createdAt = createdAt; }
 }
+

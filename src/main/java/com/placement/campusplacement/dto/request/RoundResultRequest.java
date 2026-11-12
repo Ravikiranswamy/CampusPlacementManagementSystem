@@ -38,3 +38,4 @@ public class RoundResultRequest {
     public void setScore(BigDecimal score)           { this.score = score; }
     public void setRemarks(String remarks)           { this.remarks = remarks; }
 }
+

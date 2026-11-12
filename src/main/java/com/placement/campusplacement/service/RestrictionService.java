@@ -16,3 +16,4 @@ public interface RestrictionService {
 
     List<RestrictionResponse> getStudentRestrictionHistory(Long studentId);
 }
+

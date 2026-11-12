@@ -46,3 +46,4 @@ public class RoundResultResponse {
     public void setRemarks(String remarks)                 { this.remarks = remarks; }
     public void setRecordedAt(LocalDateTime recordedAt)    { this.recordedAt = recordedAt; }
 }
+

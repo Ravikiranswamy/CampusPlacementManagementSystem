@@ -11,3 +11,4 @@ public interface EligibilityService {
 
     List<PlacementDriveResponse> getEligibleDrivesForStudent(Long studentId);
 }
+

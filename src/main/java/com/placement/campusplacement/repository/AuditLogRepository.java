@@ -13,3 +13,4 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
            "ORDER BY l.performedAt DESC")
     List<AuditLog> findAllWithDetails();
 }
+

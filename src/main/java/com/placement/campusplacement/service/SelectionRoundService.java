@@ -21,3 +21,4 @@ public interface SelectionRoundService {
 
     List<RoundResultResponse> getResultsByApplication(Long applicationId);
 }
+

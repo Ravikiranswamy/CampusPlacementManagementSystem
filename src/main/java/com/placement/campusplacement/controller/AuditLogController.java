@@ -26,3 +26,4 @@ public class AuditLogController {
         return ResponseEntity.ok(ApiResponse.success("Audit logs retrieved successfully", logs));
     }
 }
+

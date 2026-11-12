@@ -57,3 +57,4 @@ public class OfferController {
         return ResponseEntity.ok(ApiResponse.success("Offer status updated successfully", updated));
     }
 }
+

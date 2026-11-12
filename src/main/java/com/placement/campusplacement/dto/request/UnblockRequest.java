@@ -21,3 +21,4 @@ public class UnblockRequest {
     public void setOfficerUserId(Long officerUserId)     { this.officerUserId = officerUserId; }
     public void setUnblockReason(String unblockReason)   { this.unblockReason = unblockReason; }
 }
+

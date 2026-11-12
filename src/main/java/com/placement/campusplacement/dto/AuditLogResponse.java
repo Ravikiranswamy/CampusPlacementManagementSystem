@@ -36,3 +36,4 @@ public class AuditLogResponse {
     public void setActionDetail(String actionDetail)       { this.actionDetail = actionDetail; }
     public void setPerformedAt(LocalDateTime performedAt)  { this.performedAt = performedAt; }
 }
+

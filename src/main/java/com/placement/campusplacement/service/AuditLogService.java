@@ -10,3 +10,4 @@ public interface AuditLogService {
 
     List<AuditLogResponse> getAllLogs();
 }
+

@@ -48,3 +48,4 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
            "ORDER BY o.createdAt DESC")
     List<Offer> findAllWithDetails();
 }
+

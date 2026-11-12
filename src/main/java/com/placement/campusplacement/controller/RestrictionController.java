@@ -51,3 +51,4 @@ public class RestrictionController {
         return ResponseEntity.ok(ApiResponse.success("Student restriction history retrieved successfully", list));
     }
 }
+

@@ -24,3 +24,4 @@ public class ApplicationRequest {
     public void setDriveId(Long driveId)     { this.driveId = driveId; }
     public void setRemarks(String remarks)   { this.remarks = remarks; }
 }
+

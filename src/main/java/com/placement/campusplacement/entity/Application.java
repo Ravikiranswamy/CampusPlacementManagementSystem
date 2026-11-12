@@ -64,3 +64,4 @@ public class Application {
     public void setEligibilityVerified(Boolean verified)      { this.eligibilityVerified = verified; }
     public void setRemarks(String remarks)                    { this.remarks = remarks; }
 }
+

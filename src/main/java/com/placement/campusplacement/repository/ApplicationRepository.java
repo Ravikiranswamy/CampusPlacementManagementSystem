@@ -54,3 +54,4 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
            "ORDER BY a.appliedAt DESC")
     List<Application> findAllWithDetails();
 }
+

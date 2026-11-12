@@ -34,3 +34,4 @@ public interface RoundResultRepository extends JpaRepository<RoundResult, Long> 
 
     boolean existsByApplication_ApplicationIdAndRound_RoundId(Long applicationId, Long roundId);
 }
+

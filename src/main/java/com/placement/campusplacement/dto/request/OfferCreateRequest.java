@@ -41,3 +41,4 @@ public class OfferCreateRequest {
     public void setOfferLetterUrl(String offerLetterUrl)       { this.offerLetterUrl = offerLetterUrl; }
     public void setAdditionalInfo(String additionalInfo)       { this.additionalInfo = additionalInfo; }
 }
+
