@@ -18,7 +18,7 @@ export default function RoleShell({ role, navItems }) {
     <DashboardLayout
       brand="Campus Placement"
       navItems={navItems}
-      note="Sample records for this role. Nothing here is loaded from the database."
+      note="JSS Science & Technology University • DBMS Course 24CS520"
       user={{ name: session.name, role: session.roleLabel }}
       onLogout={() => {
         logout()

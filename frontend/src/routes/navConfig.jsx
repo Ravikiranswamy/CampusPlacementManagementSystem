@@ -35,7 +35,7 @@ export const teamNav = [
       { to: '/team/companies', label: 'Companies', icon: Building },
       { to: '/team/roles', label: 'Job roles', icon: Briefcase },
       { to: '/team/drives', label: 'Placement drives', icon: CalendarDays },
-      { to: '/team/eligibility', label: 'Eligibility', icon: BadgeCheck },
+      { to: '/team/eligibility', label: 'Selection rounds', icon: ListChecks },
     ],
   },
 ]
