@@ -3,15 +3,26 @@
  * Uses Vite proxy or direct relative /api path.
  */
 
-const RAW_BASE = import.meta.env.VITE_API_URL || ''
-const API_BASE = RAW_BASE ? (RAW_BASE.endsWith('/') ? `${RAW_BASE}api` : `${RAW_BASE}/api`) : '/api'
+function getApiBase() {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '')
+  if (!envUrl) return '/api'
+  // Prevent double /api/api if the environment variable already contains /api
+  if (envUrl.endsWith('/api')) return envUrl
+  return `${envUrl}/api`
+}
+
+const API_BASE = getApiBase()
 
 async function request(endpoint, options = {}) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), options.timeout || 60000)
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
     },
+    signal: controller.signal,
     ...options,
   }
 
@@ -20,7 +31,9 @@ async function request(endpoint, options = {}) {
   }
 
   try {
-    const response = await fetch(`${API_BASE}${endpoint}`, config)
+    const url = `${API_BASE}${endpoint}`
+    const response = await fetch(url, config)
+    clearTimeout(timeoutId)
 
     const contentType = response.headers.get('content-type')
     let result
@@ -29,7 +42,7 @@ async function request(endpoint, options = {}) {
     } else {
       const text = await response.text()
       if (!response.ok) {
-        throw new Error(`Backend server unreachable (HTTP ${response.status}). Please ensure Spring Boot is running on port 8080.`)
+        throw new Error(`Backend server returned HTTP ${response.status}. Please check server logs.`)
       }
       return text
     }
@@ -40,9 +53,13 @@ async function request(endpoint, options = {}) {
 
     return result.data
   } catch (error) {
+    clearTimeout(timeoutId)
     console.error(`API Error on [${options.method || 'GET'} ${endpoint}]:`, error)
+    if (error.name === 'AbortError') {
+      throw new Error('Connection timed out. The backend server on Render might still be waking up — please try clicking Sign In again!')
+    }
     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('Unexpected end of JSON')) {
-      throw new Error('Cannot connect to Spring Boot backend (localhost:8080). Please make sure your Spring Boot application is started!')
+      throw new Error('Cannot connect to backend server. If using Render free tier, please wait ~45s for the initial wake-up.')
     }
     throw error
   }

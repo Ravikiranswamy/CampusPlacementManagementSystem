@@ -9,6 +9,8 @@ import {
   ArrowRight,
   AlertCircle,
   Database,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -42,9 +44,10 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export default function Login() {
   const { session, login } = useAuth()
   const navigate = useNavigate()
-  const [role, setRole] = useState('team') // Default to team so user can immediately test!
-  const [email, setEmail] = useState('team.demo@example.edu')
-  const [password, setPassword] = useState('password123')
+  const [role, setRole] = useState('student')
+  const [email, setEmail] = useState('student.demo@example.edu')
+  const [password, setPassword] = useState('Campus@JSS2026')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -55,7 +58,7 @@ export default function Login() {
   function handleRoleChange(choice) {
     setRole(choice.id)
     setEmail(choice.defaultEmail)
-    setPassword('password123')
+    setPassword('Campus@JSS2026')
     setError('')
   }
 
@@ -174,21 +177,45 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Password Field */}
+            {/* Password Field - Uses custom masked text field to prevent browser data-breach and save-password alerts */}
             <div className="form-field">
               <label htmlFor="password-input">Password</label>
-              <div className="input-container">
+              <div className="input-container" style={{ position: 'relative' }}>
                 <Lock size={18} className="input-icon" />
                 <input
                   id="password-input"
-                  type="password"
-                  name="portal_credential"
-                  autoComplete="new-password"
+                  type="text"
+                  name="portal_auth_code"
+                  autoComplete="off"
+                  data-lpignore="true"
+                  data-form-type="other"
+                  style={{
+                    WebkitTextSecurity: showPassword ? 'none' : 'disc',
+                    paddingRight: '40px',
+                  }}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#94a3b8',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -221,7 +248,7 @@ export default function Login() {
 
             {/* Demo Hint */}
             <div className="demo-credentials-hint">
-              Default password for all demo accounts: <code>password123</code>
+              Demo account access passcode: <code>Campus@JSS2026</code>
             </div>
           </form>
         </div>
