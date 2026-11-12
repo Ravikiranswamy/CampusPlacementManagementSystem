@@ -123,7 +123,7 @@ export default function Login() {
             Select your university portal role below or enter your registered account credentials.
           </p>
 
-          <form onSubmit={handleSubmit} noValidate>
+          <form onSubmit={handleSubmit} noValidate autoComplete="off">
             {/* Role Options */}
             <fieldset className="role-fieldset">
               <legend>Select Portal Role</legend>
@@ -164,7 +164,8 @@ export default function Login() {
                 <input
                   id="email-input"
                   type="email"
-                  autoComplete="username"
+                  name="portal_username"
+                  autoComplete="off"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.edu"
@@ -181,7 +182,8 @@ export default function Login() {
                 <input
                   id="password-input"
                   type="password"
-                  autoComplete="current-password"
+                  name="portal_credential"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
