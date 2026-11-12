@@ -11,8 +11,9 @@ import {
   Database,
   Eye,
   EyeOff,
+  UserPlus,
 } from 'lucide-react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
 const roleChoices = [
@@ -20,21 +21,18 @@ const roleChoices = [
     id: 'student',
     label: 'Student Portal',
     icon: GraduationCap,
-    defaultEmail: 'student.demo@example.edu',
     detail: 'Browse drives, track eligibility & view offer letters',
   },
   {
     id: 'team',
     label: 'Placement Team Portal',
     icon: Building2,
-    defaultEmail: 'team.demo@example.edu',
     detail: 'Manage recruiters, job roles & candidate evaluations',
   },
   {
     id: 'officer',
     label: 'Placement Officer Portal',
     icon: ShieldCheck,
-    defaultEmail: 'officer.demo@example.edu',
     detail: 'Student directory, offer issuance & DBMS reports',
   },
 ]
@@ -44,9 +42,9 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export default function Login() {
   const { session, login } = useAuth()
   const navigate = useNavigate()
-  const [role, setRole] = useState('student')
-  const [email, setEmail] = useState('student.demo@example.edu')
-  const [password, setPassword] = useState('Campus@JSS2026')
+  const [role, setRole] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -57,8 +55,6 @@ export default function Login() {
 
   function handleRoleChange(choice) {
     setRole(choice.id)
-    setEmail(choice.defaultEmail)
-    setPassword('Campus@JSS2026')
     setError('')
   }
 
@@ -246,9 +242,15 @@ export default function Login() {
               )}
             </button>
 
-            {/* Demo Hint */}
-            <div className="demo-credentials-hint">
-              Demo account access passcode: <code>Campus@JSS2026</code>
+            {/* Register Link for Students */}
+            <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem', color: '#94a3b8' }}>
+              New student?{' '}
+              <Link
+                to="/register"
+                style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}
+              >
+                Create your account <UserPlus size={14} style={{ verticalAlign: 'middle' }} />
+              </Link>
             </div>
           </form>
         </div>

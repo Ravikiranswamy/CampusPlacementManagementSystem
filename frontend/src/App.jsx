@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { DataProvider } from './context/DataContext.jsx'
 import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 import ApplicationStatus from './pages/student/ApplicationStatus.jsx'
 import Eligibility from './pages/student/Eligibility.jsx'
 import MyApplications from './pages/student/MyApplications.jsx'
@@ -30,6 +31,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={<RoleShell role="student" navItems={studentNav} />}>
         <Route path="/student" element={<StudentOverview />} />
         <Route path="/student/profile" element={<StudentProfile />} />
