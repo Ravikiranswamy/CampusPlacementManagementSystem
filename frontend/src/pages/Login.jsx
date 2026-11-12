@@ -1,24 +1,26 @@
 import { useState } from 'react'
-import { GraduationCap } from 'lucide-react'
+import { GraduationCap, Loader2 } from 'lucide-react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
-import { roleProfiles } from '../data/mockData.js'
 
 const roleChoices = [
   {
     id: 'student',
     label: 'Student',
+    defaultEmail: 'student.demo@example.edu',
     detail: 'Drives, eligibility, and applications',
   },
   {
     id: 'team',
     label: 'Placement Team Member',
+    defaultEmail: 'team.demo@example.edu',
     detail: 'Companies, job roles, and drives',
   },
   {
     id: 'officer',
     label: 'Placement Officer',
-    detail: 'Students, selections, and offers',
+    defaultEmail: 'officer.demo@example.edu',
+    detail: 'Students, selections, restrictions, and reports',
   },
 ]
 
@@ -27,32 +29,45 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export default function Login() {
   const { session, login } = useAuth()
   const navigate = useNavigate()
-  const [role, setRole] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [role, setRole] = useState('student')
+  const [email, setEmail] = useState('student.demo@example.edu')
+  const [password, setPassword] = useState('password123')
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   if (session) {
     return <Navigate to={session.home} replace />
   }
 
-  function handleSubmit(event) {
+  function handleRoleChange(selectedRole) {
+    setRole(selectedRole.id)
+    setEmail(selectedRole.defaultEmail)
+    setPassword('password123')
+    setError('')
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault()
-    if (!roleProfiles[role]) {
-      setError('Select a role to continue.')
-      return
-    }
+    setError('')
+
     if (!emailPattern.test(email.trim())) {
-      setError('Enter an email address, such as name@university.edu.')
+      setError('Please enter a valid email address.')
       return
     }
     if (!password.trim()) {
-      setError('Enter a password. Any password works in this preview.')
+      setError('Please enter your password.')
       return
     }
 
-    const next = login({ email: email.trim(), role })
-    navigate(next.home, { replace: true })
+    setLoading(true)
+    try {
+      const userSession = await login({ email: email.trim(), password: password.trim() })
+      navigate(userSession.home, { replace: true })
+    } catch (err) {
+      setError(err.message || 'Login failed. Please check your credentials.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -64,15 +79,16 @@ export default function Login() {
         <p className="brand-kicker">University portal</p>
         <h1>Campus Placement</h1>
         <p>
-          The recruitment desk for students, the placement team, and the placement officer.
+          The centralized campus recruitment and placement management system for JSS Science and Technology University.
         </p>
       </section>
 
       <section className="login-card">
         <h2>Sign in</h2>
         <p className="login-lead">
-          Choose a role, then sign in. This preview keeps the session in your browser and does not check a database.
+          Select your portal role or sign in with your registered university account credentials.
         </p>
+
         <form onSubmit={handleSubmit} noValidate>
           <fieldset className="role-fieldset">
             <legend>Role</legend>
@@ -87,7 +103,7 @@ export default function Login() {
                     name="role"
                     value={choice.id}
                     checked={role === choice.id}
-                    onChange={() => setRole(choice.id)}
+                    onChange={() => handleRoleChange(choice)}
                   />
                   <span>
                     <strong>{choice.label}</strong>
@@ -98,40 +114,40 @@ export default function Login() {
             </div>
           </fieldset>
 
-          <label className="field">
-            <span>Email</span>
-            <input
-              type="email"
-              name="email"
-              autoComplete="username"
-              placeholder="name@university.edu"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
+          <label className="field-label" htmlFor="email-input">
+            Email address
           </label>
+          <input
+            id="email-input"
+            className="text-input"
+            type="email"
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <label className="field">
-            <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              autoComplete="current-password"
-              placeholder="Enter a password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
+          <label className="field-label" htmlFor="password-input">
+            Password
           </label>
+          <input
+            id="password-input"
+            className="text-input"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-          {error ? (
-            <p className="form-error" role="alert">
+          {error && (
+            <p className="login-error" role="alert">
               {error}
             </p>
-          ) : null}
+          )}
 
-          <button type="submit" className="primary-button">
-            Login
+          <button className="submit-button" type="submit" disabled={loading}>
+            {loading ? 'Authenticating...' : 'Sign in'}
           </button>
         </form>
       </section>

@@ -1,0 +1,249 @@
+\documentclass[12pt,a4paper]{report}
+
+% -----------------------------------------------------------------------------
+% PACKAGES & FORMATTING (DBMS 24CS520 Guidelines)
+% -----------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage{times}              % Times New Roman font
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing                 % 1.5 Line Spacing
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{titlesec}
+
+% Section Heading Formatting
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{16}{20}\bfseries}{\chaptertitlename\ \thechapter}{14pt}{\fontsize{16}{20}\bfseries}
+\titleformat{\section}
+  {\normalfont\fontsize{14}{18}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{16}\bfseries}{\thesubsection}{1em}{}
+
+% Code Listings Formatting
+\lstset{
+  language=SQL,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries\color{blue!80!black},
+  commentstyle=\itshape\color{green!50!black},
+  stringstyle=\color{red!60!black},
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  showstringspaces=false
+}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% TITLE SHEET
+% -----------------------------------------------------------------------------
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+    {\Large\textbf{JSS MAHAVIDYAPEETHA}}\\[0.2cm]
+    {\LARGE\textbf{JSS SCIENCE AND TECHNOLOGY UNIVERSITY}}\\[0.1cm]
+    {\large MYSURU -- 570 006}\\[1.5cm]
+    
+    {\large\textbf{DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}}\\[1.5cm]
+    
+    {\LARGE\textbf{CAMPUS RECRUITMENT AND PLACEMENT MANAGEMENT SYSTEM}}\\[0.5cm]
+    {\large\textit{A Project Report submitted in partial fulfillment of the requirements for the course}}\\[0.3cm]
+    {\large\textbf{Database Management Systems (24CS520)}}\\[1.5cm]
+    
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \textbf{Submitted by:}\\
+            \textbf{Ravikiran Swamy}\\
+            \textbf{USN: 4JC23CS...}\\
+            V Semester, B.E. (CSE)
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+            \textbf{Under the Guidance of:}\\
+            Faculty In-Charge\\
+            Dept. of Computer Science \& Engg.\\
+            JSS STU, Mysuru
+        \end{flushright}
+    \end{minipage}\\[2.5cm]
+    
+    \vfill
+    {\large Academic Year 2026 -- 2027}
+\end{titlepage}
+
+% -----------------------------------------------------------------------------
+% CERTIFICATE
+% -----------------------------------------------------------------------------
+\newpage
+\thispagestyle{empty}
+\begin{center}
+    {\Large\textbf{DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}}\\[0.2cm]
+    {\Large\textbf{JSS SCIENCE AND TECHNOLOGY UNIVERSITY, MYSURU}}\\[1.5cm]
+    {\LARGE\textbf{CERTIFICATE}}\\[1.5cm]
+\end{center}
+
+\noindent This is to certify that the project work entitled \textbf{``Campus Recruitment and Placement Management System''} is a bonafide work carried out by \textbf{Ravikiran Swamy} in partial fulfillment of the requirements for the award of Bachelor of Engineering in Computer Science and Engineering during the academic year 2026--2027 for the course \textbf{Database Management Systems (24CS520)}.
+
+\vspace{3.5cm}
+
+\noindent
+\begin{tabular}{@{}p{0.5\textwidth}p{0.5\textwidth}@{}}
+    \textbf{Course Coordinator} & \textbf{Head of the Department} \\
+    Dept. of CSE, JSS STU & Dept. of CSE, JSS STU
+\end{tabular}
+
+% -----------------------------------------------------------------------------
+% TABLE OF CONTENTS
+% -----------------------------------------------------------------------------
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+
+% -----------------------------------------------------------------------------
+% CHAPTER 1: INTRODUCTION
+% -----------------------------------------------------------------------------
+\chapter{Introduction}
+Campus recruitment represents one of the most critical annual operations for universities. Historically, placement cells have relied on fragmented spreadsheets, email notices, manual eligibility verifications, and physical forms. This project introduces a centralized, database-driven **Campus Recruitment and Placement Management System** designed to streamline student profiles, company job postings, recruitment drives, dynamic eligibility verification, round-by-round selection tracking, and final offer lifecycle governance.
+
+\section{Problem Statement}
+Manual campus recruitment suffers from:
+\begin{enumerate}
+    \item Scattered academic and disciplinary records leading to ineligible candidates applying.
+    \item Error-prone manual calculations of cutoffs and backlog restrictions.
+    \item Difficulties in tracking candidate movement through multi-round interviews.
+    \item Lack of auditable disciplinary enforcement and historical tracking of restrictions.
+    \item Tedious compilation of placement statistics and package metrics for college reports.
+\end{enumerate}
+
+\section{Project Objectives}
+\begin{itemize}
+    \item Build a normalized 16-table PostgreSQL database hosted on Neon Cloud.
+    \item Implement a robust Spring Boot backend adhering to a modular monolithic architecture.
+    \item Enforce database integrity with foreign keys, checks, triggers, and stored procedures.
+    \item Provide an interactive React web interface tailored for Students, Placement Team Members, and Placement Officers.
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+% CHAPTER 2: SYSTEM DESIGN & ARCHITECTURE
+% -----------------------------------------------------------------------------
+\chapter{System Design and Database Architecture}
+
+\section{Entity-Relationship Model}
+The database contains 16 normalized tables categorized into four functional groups:
+\begin{itemize}
+    \item \textbf{Group A (User \& Student Domain)}: \texttt{users}, \texttt{departments}, \texttt{students}, \texttt{skills}, \texttt{student\_skills}.
+    \item \textbf{Group B (Company \& Drive Domain)}: \texttt{companies}, \texttt{job\_roles}, \texttt{placement\_drives}, \texttt{drive\_eligibility}, \texttt{drive\_eligibility\_departments}.
+    \item \textbf{Group C (Application \& Selection Domain)}: \texttt{applications}, \texttt{selection\_rounds}, \texttt{round\_results}, \texttt{offers}.
+    \item \textbf{Group D (Administrative Domain)}: \texttt{placement\_restrictions}, \texttt{audit\_logs}.
+\end{itemize}
+
+\section{Relational Schema Specification}
+Every table satisfies the DBMS requirement of having at least 5 attributes:
+\begin{enumerate}
+    \item \textbf{users}(\underline{user\_id}, full\_name, email, password\_hash, role, is\_active, created\_at)
+    \item \textbf{departments}(\underline{department\_id}, department\_code, department\_name, hod\_name, office\_email, created\_at)
+    \item \textbf{students}(\underline{student\_id}, user\_id*, usn, department\_id*, section, cgpa, active\_backlogs, graduation\_year, phone, resume\_url, created\_at)
+    \item \textbf{skills}(\underline{skill\_id}, skill\_name, category, description, is\_active, created\_at)
+    \item \textbf{student\_skills}(\underline{student\_id*}, \underline{skill\_id*}, proficiency\_level, certification\_url, added\_at)
+    \item \textbf{companies}(\underline{company\_id}, company\_name, industry, website, contact\_email, contact\_phone, address, description, is\_active, created\_at)
+    \item \textbf{job\_roles}(\underline{job\_role\_id}, company\_id*, role\_title, job\_type, package\_lpa, work\_location, job\_description, is\_active, created\_at)
+    \item \textbf{placement\_drives}(\underline{drive\_id}, company\_id*, job\_role\_id*, drive\_title, registration\_deadline, drive\_date, status, created\_by*, description, created\_at)
+    \item \textbf{drive\_eligibility}(\underline{eligibility\_id}, drive\_id*, min\_cgpa, max\_active\_backlogs, eligible\_graduation\_year, additional\_criteria, created\_at)
+    \item \textbf{drive\_eligibility\_departments}(\underline{eligibility\_id*}, \underline{department\_id*}, min\_dept\_cgpa, is\_mandatory, added\_at)
+    \item \textbf{applications}(\underline{application\_id}, student\_id*, drive\_id*, applied\_at, status, eligibility\_verified, remarks)
+    \item \textbf{selection\_rounds}(\underline{round\_id}, drive\_id*, round\_number, round\_name, round\_description, scheduled\_at, round\_status, created\_at)
+    \item \textbf{round\_results}(\underline{result\_id}, application\_id*, round\_id*, result\_status, score, remarks, recorded\_at)
+    \item \textbf{offers}(\underline{offer\_id}, application\_id*, offered\_package\_lpa, offer\_date, joining\_date, offer\_status, offer\_letter\_url, additional\_info, created\_at)
+    \item \textbf{placement\_restrictions}(\underline{restriction\_id}, student\_id*, imposed\_by*, reason, start\_date, end\_date, is\_active, unblocked\_at, unblock\_reason, created\_at)
+    \item \textbf{audit\_logs}(\underline{log\_id}, performed\_by*, action\_type, entity\_name, entity\_id, action\_detail, performed\_at)
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+% CHAPTER 3: DATABASE IMPLEMENTATION & SQL DEMONSTRATIONS
+% -----------------------------------------------------------------------------
+\chapter{Database Demonstrations and Queries}
+
+\section{Triggers}
+\textbf{Trigger 1: Automatic Disciplinary Restriction Check Trigger}\\
+Enforces database-level protection against blocked students submitting applications:
+\begin{lstlisting}
+CREATE OR REPLACE FUNCTION fn_check_student_restriction()
+RETURNS TRIGGER AS $$
+DECLARE v_is_restricted BOOLEAN;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1 FROM placement_restrictions
+        WHERE student_id = NEW.student_id
+          AND is_active = TRUE
+          AND (end_date IS NULL OR end_date >= CURRENT_DATE)
+    ) INTO v_is_restricted;
+
+    IF v_is_restricted THEN
+        RAISE EXCEPTION 'Constraint Violation: Student has an active restriction.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_prevent_blocked_student_apply
+BEFORE INSERT ON applications
+FOR EACH ROW EXECUTE FUNCTION fn_check_student_restriction();
+\end{lstlisting}
+
+\section{Stored Procedures}
+\textbf{Procedure 1: Automatic Closure of Expired Drives}
+\begin{lstlisting}
+CREATE OR REPLACE PROCEDURE sp_close_expired_drives()
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE placement_drives
+    SET status = 'CLOSED'
+    WHERE status = 'PUBLISHED' AND registration_deadline < CURRENT_TIMESTAMP;
+END;
+$$;
+\end{lstlisting}
+
+\section{Analytical Placement Reports}
+\textbf{Report 1: Department-wise and Company-wise Placement Statistics}
+\begin{lstlisting}
+SELECT c.company_name, d.department_code,
+       COUNT(DISTINCT a.application_id) AS total_applications,
+       COUNT(DISTINCT CASE WHEN a.status = 'SELECTED' THEN a.application_id END) AS selected,
+       COUNT(DISTINCT CASE WHEN o.offer_status = 'ACCEPTED' THEN o.offer_id END) AS accepted_offers
+FROM companies c
+JOIN placement_drives pd ON c.company_id = pd.company_id
+JOIN applications a ON pd.drive_id = a.drive_id
+JOIN students s ON a.student_id = s.student_id
+JOIN departments d ON s.department_id = d.department_id
+LEFT JOIN offers o ON a.application_id = o.application_id
+GROUP BY c.company_name, d.department_code;
+\end{lstlisting}
+
+% -----------------------------------------------------------------------------
+% CHAPTER 4: CONCLUSION
+% -----------------------------------------------------------------------------
+\chapter{Conclusion and Future Scope}
+The Campus Recruitment and Placement Management System successfully integrates all aspects of university recruitment into a unified, secure, and normalized platform. By leveraging PostgreSQL on Neon Cloud with Spring Boot and React, the system satisfies all academic requirements of the DBMS course (24CS520) while remaining robust enough for practical deployment.
+
+\begin{thebibliography}{9}
+\bibitem{silberschatz}
+Abraham Silberschatz, Henry F. Korth, S. Sudarshan,
+\textit{Database System Concepts}, 7th Edition, McGraw-Hill, 2019.
+\bibitem{spring}
+Spring Framework Documentation, \url{https://spring.io/projects/spring-boot}.
+\bibitem{neon}
+Neon Cloud PostgreSQL Architecture Guide, \url{https://neon.tech/docs}.
+\end{thebibliography}
+
+\end{document}

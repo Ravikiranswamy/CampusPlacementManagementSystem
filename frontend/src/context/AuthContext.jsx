@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from 'react'
-import { roleProfiles } from '../data/mockData.js'
+import { api } from '../api/client.js'
 
 const STORAGE_KEY = 'campus-placement-session'
 const AuthContext = createContext(null)
@@ -8,9 +8,7 @@ function readSession() {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
     if (!raw) return null
-    const parsed = JSON.parse(raw)
-    if (!parsed?.role || !roleProfiles[parsed.role]) return null
-    return parsed
+    return JSON.parse(raw)
   } catch {
     return null
   }
@@ -22,18 +20,25 @@ export function AuthProvider({ children }) {
   const value = useMemo(
     () => ({
       session,
-      login({ email, role }) {
-        const profile = roleProfiles[role]
-        const next = {
-          email,
-          role,
-          name: profile.name,
-          roleLabel: profile.roleLabel,
-          home: profile.home,
+      async login({ email, password }) {
+        try {
+          const data = await api.login({ email, password })
+          const userSession = {
+            userId: data.userId,
+            studentId: data.studentId,
+            email: data.email,
+            name: data.fullName,
+            role: data.role.toLowerCase().includes('officer') ? 'officer'
+                : data.role.toLowerCase().includes('team') ? 'team' : 'student',
+            roleLabel: data.role.replace('_', ' '),
+            home: data.homeRoute,
+          }
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(userSession))
+          setSession(userSession)
+          return userSession
+        } catch (error) {
+          throw error
         }
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-        setSession(next)
-        return next
       },
       logout() {
         sessionStorage.removeItem(STORAGE_KEY)

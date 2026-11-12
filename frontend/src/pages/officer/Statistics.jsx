@@ -1,74 +1,99 @@
-import SampleNote from '../../components/ui/SampleNote.jsx'
-import { departmentStats, matchesQuery } from '../../data/mockData.js'
 import { useData } from '../../context/DataContext.jsx'
+import { matchesQuery } from '../../data/mockData.js'
 import { usePageQuery } from '../../hooks/usePageQuery.js'
 
 export default function Statistics() {
   const query = usePageQuery()
-  const { offers } = useData()
-  const departments = departmentStats.filter((row) =>
-    matchesQuery(query, [row.department, row.registered, row.placed]),
+  const { placementReports, packageReports, offers } = useData()
+
+  const filteredPlacementReports = (placementReports || []).filter((row) =>
+    matchesQuery(query, [row.companyName, row.departmentCode, row.departmentName]),
   )
-  const byCompany = Object.values(
-    offers.reduce((groups, offer) => {
-      const current = groups[offer.company] ?? { id: offer.company, company: offer.company, count: 0 }
-      current.count += 1
-      groups[offer.company] = current
-      return groups
-    }, {}),
-  ).filter((row) => matchesQuery(query, [row.company]))
+
+  const filteredPackageReports = (packageReports || []).filter((row) =>
+    matchesQuery(query, [row.companyName]),
+  )
 
   return (
     <div className="page-stack">
-      <SampleNote />
+      {/* REPORT 1: Company-wise & Department-wise Placement Statistics */}
       <section className="panel">
         <div className="panel-head">
-          <h2>Placement by department</h2>
-          <p>Placed students against the registered batch in the sample summary.</p>
+          <h2>Report 1: Department & Company Placement Analytics</h2>
+          <p>
+            Real-time aggregate data from Neon PostgreSQL database tracking applications, selections, and accepted offers.
+          </p>
         </div>
-        {departments.length === 0 ? (
-          <p className="table-empty">No departments match that search.</p>
+
+        {filteredPlacementReports.length === 0 ? (
+          <p className="table-empty">No placement records match that query.</p>
         ) : (
-          <div className="bar-list">
-            {departments.map((row) => {
-              const percent = Math.round((row.placed / row.registered) * 100)
-              return (
-                <div className="bar-row" key={row.id}>
-                  <div className="bar-label">
-                    <span>{row.department}</span>
-                    <span>
-                      {row.placed} / {row.registered} · {percent}%
-                    </span>
-                  </div>
-                  <div className="bar-track" aria-hidden="true">
-                    <div className="bar-fill" style={{ width: `${percent}%` }} />
-                  </div>
-                </div>
-              )
-            })}
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Dept Code</th>
+                  <th>Department Name</th>
+                  <th>Applications</th>
+                  <th>Selected</th>
+                  <th>Offers Issued</th>
+                  <th>Accepted Offers</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPlacementReports.map((row, idx) => (
+                  <tr key={idx}>
+                    <td><strong>{row.companyName}</strong></td>
+                    <td>{row.departmentCode}</td>
+                    <td>{row.departmentName}</td>
+                    <td>{row.totalApplications}</td>
+                    <td>{row.selectedStudents}</td>
+                    <td>{row.totalOffers}</td>
+                    <td><span className="badge badge-success">{row.acceptedOffers}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </section>
+
+      {/* REPORT 2: Average and Highest Package Analysis */}
       <section className="panel">
         <div className="panel-head">
-          <h2>Offers by company</h2>
-          <p>Count of sample offer letters, not a live placement report.</p>
+          <h2>Report 2: CTC Package Analysis (Highest & Average)</h2>
+          <p>
+            Statistical breakdown of compensation packages (LPA) across participating recruitment companies.
+          </p>
         </div>
-        {byCompany.length === 0 ? (
-          <p className="table-empty">No companies match that search.</p>
+
+        {filteredPackageReports.length === 0 ? (
+          <p className="table-empty">No package records match that query.</p>
         ) : (
-          <div className="bar-list">
-            {byCompany.map((row) => (
-              <div className="bar-row" key={row.id}>
-                <div className="bar-label">
-                  <span>{row.company}</span>
-                  <span>{row.count}</span>
-                </div>
-                <div className="bar-track" aria-hidden="true">
-                  <div className="bar-fill gold" style={{ width: `${(row.count / offers.length) * 100}%` }} />
-                </div>
-              </div>
-            ))}
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Accepted Placements</th>
+                  <th>Average Package (LPA)</th>
+                  <th>Highest Package (LPA)</th>
+                  <th>Lowest Package (LPA)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPackageReports.map((row, idx) => (
+                  <tr key={idx}>
+                    <td><strong>{row.companyName}</strong></td>
+                    <td>{row.acceptedPlacements}</td>
+                    <td><strong>₹ {Number(row.averagePackageLpa).toFixed(2)} LPA</strong></td>
+                    <td style={{ color: '#16a34a' }}>₹ {Number(row.highestPackageLpa).toFixed(2)} LPA</td>
+                    <td>₹ {Number(row.lowestPackageLpa).toFixed(2)} LPA</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </section>
