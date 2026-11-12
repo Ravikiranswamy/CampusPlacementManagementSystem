@@ -1,26 +1,39 @@
 import { useState } from 'react'
-import { GraduationCap, Loader2 } from 'lucide-react'
+import {
+  GraduationCap,
+  Building2,
+  ShieldCheck,
+  Mail,
+  Lock,
+  Loader2,
+  ArrowRight,
+  AlertCircle,
+  Database,
+} from 'lucide-react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 
 const roleChoices = [
   {
     id: 'student',
-    label: 'Student',
+    label: 'Student Portal',
+    icon: GraduationCap,
     defaultEmail: 'student.demo@example.edu',
-    detail: 'Drives, eligibility, and applications',
+    detail: 'Browse drives, track eligibility & view offer letters',
   },
   {
     id: 'team',
-    label: 'Placement Team Member',
+    label: 'Placement Team Portal',
+    icon: Building2,
     defaultEmail: 'team.demo@example.edu',
-    detail: 'Companies, job roles, and drives',
+    detail: 'Manage recruiters, job roles & candidate evaluations',
   },
   {
     id: 'officer',
-    label: 'Placement Officer',
+    label: 'Placement Officer Portal',
+    icon: ShieldCheck,
     defaultEmail: 'officer.demo@example.edu',
-    detail: 'Students, selections, restrictions, and reports',
+    detail: 'Student directory, offer issuance & DBMS reports',
   },
 ]
 
@@ -29,8 +42,8 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export default function Login() {
   const { session, login } = useAuth()
   const navigate = useNavigate()
-  const [role, setRole] = useState('student')
-  const [email, setEmail] = useState('student.demo@example.edu')
+  const [role, setRole] = useState('team') // Default to team so user can immediately test!
+  const [email, setEmail] = useState('team.demo@example.edu')
   const [password, setPassword] = useState('password123')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -39,9 +52,9 @@ export default function Login() {
     return <Navigate to={session.home} replace />
   }
 
-  function handleRoleChange(selectedRole) {
-    setRole(selectedRole.id)
-    setEmail(selectedRole.defaultEmail)
+  function handleRoleChange(choice) {
+    setRole(choice.id)
+    setEmail(choice.defaultEmail)
     setPassword('password123')
     setError('')
   }
@@ -51,11 +64,11 @@ export default function Login() {
     setError('')
 
     if (!emailPattern.test(email.trim())) {
-      setError('Please enter a valid email address.')
+      setError('Please enter a valid university email address.')
       return
     }
     if (!password.trim()) {
-      setError('Please enter your password.')
+      setError('Please enter your account password.')
       return
     }
 
@@ -64,7 +77,7 @@ export default function Login() {
       const userSession = await login({ email: email.trim(), password: password.trim() })
       navigate(userSession.home, { replace: true })
     } catch (err) {
-      setError(err.message || 'Login failed. Please check your credentials.')
+      setError(err.message || 'Login failed. Please verify credentials or ensure the server is active.')
     } finally {
       setLoading(false)
     }
@@ -72,84 +85,144 @@ export default function Login() {
 
   return (
     <main className="login-screen">
+      {/* Left University Branding Panel */}
       <section className="login-panel">
-        <span className="brand-mark" aria-hidden="true">
-          <GraduationCap size={22} />
-        </span>
-        <p className="brand-kicker">University portal</p>
-        <h1>Campus Placement</h1>
-        <p>
-          The centralized campus recruitment and placement management system for JSS Science and Technology University.
-        </p>
+        <div className="login-brand-top">
+          <div className="brand-mark">
+            <GraduationCap size={24} />
+          </div>
+          <div>
+            <p className="brand-kicker">JSS Science & Technology University</p>
+            <span style={{ fontSize: '0.88rem', color: '#cbd5e1', fontWeight: 500 }}>
+              Department of Computer Science & Engineering
+            </span>
+          </div>
+        </div>
+
+        <div className="login-brand-copy">
+          <h1>Campus Placement & Recruitment Portal</h1>
+          <p>
+            A centralized, relational database management platform powering campus hiring, eligibility checks, interview rounds, and offer tracking.
+          </p>
+        </div>
+
+        <div className="login-footer-badges">
+          <span className="badge-pill">
+            <Database size={13} /> Neon PostgreSQL (16 Tables)
+          </span>
+          <span className="badge-pill">DBMS Course 24CS520</span>
+          <span className="badge-pill">Spring Boot 4.1</span>
+        </div>
       </section>
 
+      {/* Right Login Card & Form */}
       <section className="login-card">
-        <h2>Sign in</h2>
-        <p className="login-lead">
-          Select your portal role or sign in with your registered university account credentials.
-        </p>
+        <div className="login-card-inner">
+          <h2>Sign In</h2>
+          <p className="login-lead">
+            Select your university portal role below or enter your registered account credentials.
+          </p>
 
-        <form onSubmit={handleSubmit} noValidate>
-          <fieldset className="role-fieldset">
-            <legend>Role</legend>
-            <div className="role-grid">
-              {roleChoices.map((choice) => (
-                <label
-                  key={choice.id}
-                  className={role === choice.id ? 'role-option selected' : 'role-option'}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value={choice.id}
-                    checked={role === choice.id}
-                    onChange={() => handleRoleChange(choice)}
-                  />
-                  <span>
-                    <strong>{choice.label}</strong>
-                    <small>{choice.detail}</small>
-                  </span>
-                </label>
-              ))}
+          <form onSubmit={handleSubmit} noValidate>
+            {/* Role Options */}
+            <fieldset className="role-fieldset">
+              <legend>Select Portal Role</legend>
+              <div className="role-grid">
+                {roleChoices.map((choice) => {
+                  const Icon = choice.icon
+                  const isSelected = role === choice.id
+                  return (
+                    <label
+                      key={choice.id}
+                      className={`role-option ${isSelected ? 'selected' : ''}`}
+                    >
+                      <input
+                        type="radio"
+                        name="portal-role"
+                        value={choice.id}
+                        checked={isSelected}
+                        onChange={() => handleRoleChange(choice)}
+                      />
+                      <div className="role-icon-box">
+                        <Icon size={18} />
+                      </div>
+                      <div className="role-text">
+                        <strong>{choice.label}</strong>
+                        <small>{choice.detail}</small>
+                      </div>
+                    </label>
+                  )
+                })}
+              </div>
+            </fieldset>
+
+            {/* Email Field */}
+            <div className="form-field">
+              <label htmlFor="email-input">Institutional Email</label>
+              <div className="input-container">
+                <Mail size={18} className="input-icon" />
+                <input
+                  id="email-input"
+                  type="email"
+                  autoComplete="username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.edu"
+                  required
+                />
+              </div>
             </div>
-          </fieldset>
 
-          <label className="field-label" htmlFor="email-input">
-            Email address
-          </label>
-          <input
-            id="email-input"
-            className="text-input"
-            type="email"
-            autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+            {/* Password Field */}
+            <div className="form-field">
+              <label htmlFor="password-input">Password</label>
+              <div className="input-container">
+                <Lock size={18} className="input-icon" />
+                <input
+                  id="password-input"
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
+                />
+              </div>
+            </div>
 
-          <label className="field-label" htmlFor="password-input">
-            Password
-          </label>
-          <input
-            id="password-input"
-            className="text-input"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+            {/* Error Message */}
+            {error && (
+              <div className="login-error-alert" role="alert">
+                <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                <span>{error}</span>
+              </div>
+            )}
 
-          {error && (
-            <p className="login-error" role="alert">
-              {error}
-            </p>
-          )}
+            {/* Submit Button */}
+            <button
+              className="login-submit-btn"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
+                  <span>Verifying Credentials...</span>
+                </>
+              ) : (
+                <>
+                  <span>Enter Portal</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
 
-          <button className="submit-button" type="submit" disabled={loading}>
-            {loading ? 'Authenticating...' : 'Sign in'}
-          </button>
-        </form>
+            {/* Demo Hint */}
+            <div className="demo-credentials-hint">
+              Default password for all demo accounts: <code>password123</code>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
   )
