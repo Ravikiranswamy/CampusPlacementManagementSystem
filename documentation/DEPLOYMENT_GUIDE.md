@@ -84,3 +84,4 @@ cd frontend
 npm run dev
 ```
 Vite dev server starts on `http://localhost:5173` with automatic reverse proxy to `http://localhost:8080/api`.
+

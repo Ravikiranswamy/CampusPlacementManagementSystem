@@ -34,3 +34,4 @@ public class PackageStatisticsReport {
     public void setHighestPackageLpa(BigDecimal highestPackageLpa) { this.highestPackageLpa = highestPackageLpa; }
     public void setLowestPackageLpa(BigDecimal lowestPackageLpa)   { this.lowestPackageLpa = lowestPackageLpa; }
 }
+

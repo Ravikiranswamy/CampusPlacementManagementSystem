@@ -20,7 +20,18 @@ async function request(endpoint, options = {}) {
 
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, config)
-    const result = await response.json()
+
+    const contentType = response.headers.get('content-type')
+    let result
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json()
+    } else {
+      const text = await response.text()
+      if (!response.ok) {
+        throw new Error(`Backend server unreachable (HTTP ${response.status}). Please ensure Spring Boot is running on port 8080.`)
+      }
+      return text
+    }
 
     if (!response.ok || result.success === false) {
       throw new Error(result.message || 'An error occurred while connecting to the server')
@@ -29,6 +40,9 @@ async function request(endpoint, options = {}) {
     return result.data
   } catch (error) {
     console.error(`API Error on [${options.method || 'GET'} ${endpoint}]:`, error)
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('Unexpected end of JSON')) {
+      throw new Error('Cannot connect to Spring Boot backend (localhost:8080). Please make sure your Spring Boot application is started!')
+    }
     throw error
   }
 }
@@ -111,3 +125,4 @@ export const api = {
   getPlacementStats: () => request('/reports/placement-stats'),
   getPackageStats: () => request('/reports/package-stats'),
 }
+

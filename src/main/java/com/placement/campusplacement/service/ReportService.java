@@ -11,3 +11,4 @@ public interface ReportService {
 
     List<PackageStatisticsReport> getPackageStatistics();
 }
+

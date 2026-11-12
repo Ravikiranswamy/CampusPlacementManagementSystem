@@ -40,3 +40,4 @@ public class PlacementStatisticsReport {
     public void setTotalOffers(Long totalOffers)               { this.totalOffers = totalOffers; }
     public void setAcceptedOffers(Long acceptedOffers)         { this.acceptedOffers = acceptedOffers; }
 }
+

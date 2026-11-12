@@ -47,3 +47,4 @@ public class ReportController {
         return ResponseEntity.ok(ApiResponse.success("Package statistics report generated successfully", reports));
     }
 }
+

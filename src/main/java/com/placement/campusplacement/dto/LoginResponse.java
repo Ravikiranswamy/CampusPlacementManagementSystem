@@ -44,3 +44,4 @@ public class LoginResponse {
     public void setStudentId(Long studentId)    { this.studentId = studentId; }
     public void setHomeRoute(String homeRoute)  { this.homeRoute = homeRoute; }
 }
+
