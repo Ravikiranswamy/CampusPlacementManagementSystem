@@ -3,7 +3,8 @@
  * Uses Vite proxy or direct relative /api path.
  */
 
-const API_BASE = '/api'
+const RAW_BASE = import.meta.env.VITE_API_URL || ''
+const API_BASE = RAW_BASE ? (RAW_BASE.endsWith('/') ? `${RAW_BASE}api` : `${RAW_BASE}/api`) : '/api'
 
 async function request(endpoint, options = {}) {
   const config = {
