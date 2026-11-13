@@ -315,12 +315,6 @@ Record Results ──────────────► View Round Status  
 
 ---
 
-## 👨‍💻 Developed By
-
-**Ravikiran Swamy**  
-B.E. Computer Science & Engineering  
-JSS Science & Technology University, Mysuru  
-DBMS Course Project — 24CS520 (2026)
 
 ---
 
