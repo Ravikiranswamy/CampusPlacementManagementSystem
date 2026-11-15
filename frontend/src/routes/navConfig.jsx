@@ -19,7 +19,7 @@ export const studentNav = [
     items: [
       { to: '/student', label: 'Overview', icon: LayoutDashboard, end: true },
       { to: '/student/profile', label: 'Profile', icon: UserRound },
-      { to: '/student/drives', label: 'Placement drives', icon: Briefcase },
+      { to: '/student/drives', label: 'Register for companies', icon: Briefcase },
       { to: '/student/eligibility', label: 'Eligibility', icon: BadgeCheck },
       { to: '/student/applications', label: 'My applications', icon: FileText },
       { to: '/student/status', label: 'Application status', icon: ClipboardList },
