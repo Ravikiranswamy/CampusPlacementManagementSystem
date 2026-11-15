@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext.jsx'
 import { api } from '../../api/client.js'
 import DataTable from '../../components/ui/DataTable.jsx'
 import FilterSelect from '../../components/ui/FilterSelect.jsx'
@@ -11,6 +12,7 @@ import { Plus, Calendar, CheckCircle2, AlertCircle } from 'lucide-react'
 
 export default function TeamDrives() {
   const query = usePageQuery()
+  const { session } = useAuth()
   const [drives, setDrives] = useState([])
   const [companies, setCompanies] = useState([])
   const [jobRoles, setJobRoles] = useState([])
@@ -25,10 +27,15 @@ export default function TeamDrives() {
   const [driveTitle, setDriveTitle] = useState('')
   const [deadline, setDeadline] = useState('2026-12-15')
   const [driveDate, setDriveDate] = useState('2026-12-20')
-  const [minCgpa, setMinCgpa] = useState('7.0')
-  const [maxBacklogs, setMaxBacklogs] = useState('0')
+  const [minCgpa, setMinCgpa] = useState('0.0')
+  const [maxBacklogs, setMaxBacklogs] = useState('2')
+  const [targetGradYear, setTargetGradYear] = useState('2028')
+  const [monthlyStipend, setMonthlyStipend] = useState('')
+  const [jd1Url, setJd1Url] = useState('')
+  const [jd2Url, setJd2Url] = useState('')
+  const [jd3Url, setJd3Url] = useState('')
   const [description, setDescription] = useState('Campus recruitment drive for engineering graduates.')
-  const [selectedDeptIds, setSelectedDeptIds] = useState([1, 2])
+  const [selectedDeptIds, setSelectedDeptIds] = useState([1, 2, 6, 7])
   const [actionLoading, setActionLoading] = useState(false)
 
   // Status Change Modal
@@ -95,12 +102,16 @@ export default function TeamDrives() {
         driveTitle,
         registrationDeadline: `${deadline}T23:59:59`,
         driveDate,
-        createdByUserId: 2,
+        createdByUserId: session?.userId || 8,
+        stipendMonthly: monthlyStipend ? Number(monthlyStipend) : null,
+        jd1Url: jd1Url.trim() || null,
+        jd2Url: jd2Url.trim() || null,
+        jd3Url: jd3Url.trim() || null,
         description,
         eligibility: {
-          minCgpa: Number(minCgpa),
-          maxActiveBacklogs: Number(maxBacklogs),
-          eligibleGraduationYear: 2027,
+          minCgpa: Number(minCgpa || 0),
+          maxActiveBacklogs: Number(maxBacklogs || 0),
+          eligibleGraduationYear: Number(targetGradYear || 2028),
           eligibleDepartmentIds: selectedDeptIds,
         },
       })

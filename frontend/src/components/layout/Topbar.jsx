@@ -12,12 +12,13 @@ function pageTitle(pathname, navItems) {
 }
 
 function initials(name) {
-  return name
+  if (!name) return 'U'
+  return String(name)
     .split(' ')
     .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase())
-    .join('')
+    .join('') || 'U'
 }
 
 export default function Topbar({ navItems, user, query, onQueryChange, onMenuClick, onLogout }) {
