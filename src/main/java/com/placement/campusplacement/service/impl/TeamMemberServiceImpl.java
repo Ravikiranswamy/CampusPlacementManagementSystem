@@ -65,6 +65,17 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     @Transactional
+    public UserResponse resetPassword(Long userId, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        User updated = userRepository.save(user);
+        return mapToResponse(updated);
+    }
+
+    @Override
+    @Transactional
     public void deleteTeamMember(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));

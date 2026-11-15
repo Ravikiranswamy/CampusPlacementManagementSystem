@@ -194,8 +194,8 @@ export default function TeamEligibility() {
           </div>
           <button
             type="button"
-            className="btn btn-primary"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.35rem 0.75rem', fontSize: '0.85rem' }}
+            className="primary-button compact"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem' }}
             onClick={() => setIsAddRoundOpen(true)}
           >
             <Plus size={15} /> Add Round
@@ -245,7 +245,7 @@ export default function TeamEligibility() {
                         <td>
                           <button
                             type="button"
-                            className="btn"
+                            className="action-button"
                             style={{ padding: '0.25rem 0.65rem', fontSize: '0.8rem' }}
                             disabled={!selectedRoundId}
                             onClick={() => {
@@ -305,10 +305,10 @@ export default function TeamEligibility() {
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" className="btn" onClick={() => setIsAddRoundOpen(false)}>
+              <button type="button" className="secondary-button" onClick={() => setIsAddRoundOpen(false)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={actionLoading}>
+              <button type="submit" className="primary-button" disabled={actionLoading}>
                 {actionLoading ? 'Creating...' : 'Create Round'}
               </button>
             </div>
@@ -361,10 +361,10 @@ export default function TeamEligibility() {
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" className="btn" onClick={() => setGradingApp(null)}>
+              <button type="button" className="secondary-button" onClick={() => setGradingApp(null)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={actionLoading}>
+              <button type="submit" className="primary-button" disabled={actionLoading}>
                 {actionLoading ? 'Saving...' : 'Submit Evaluation'}
               </button>
             </div>

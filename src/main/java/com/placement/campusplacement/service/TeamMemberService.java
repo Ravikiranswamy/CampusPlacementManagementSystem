@@ -13,6 +13,8 @@ public interface TeamMemberService {
 
     UserResponse toggleTeamMemberStatus(Long userId);
 
+    UserResponse resetPassword(Long userId, String newPassword);
+
     void deleteTeamMember(Long userId);
 }
 

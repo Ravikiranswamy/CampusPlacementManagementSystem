@@ -3,6 +3,7 @@ package com.placement.campusplacement.controller;
 import com.placement.campusplacement.dto.ApiResponse;
 import com.placement.campusplacement.dto.UserResponse;
 import com.placement.campusplacement.dto.request.CreateTeamMemberRequest;
+import com.placement.campusplacement.exception.BusinessRuleException;
 import com.placement.campusplacement.service.TeamMemberService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for Placement Team Member management.
@@ -56,6 +58,22 @@ public class TeamMemberController {
     public ResponseEntity<ApiResponse<UserResponse>> toggleStatus(@PathVariable Long id) {
         UserResponse updated = teamMemberService.toggleTeamMemberStatus(id);
         return ResponseEntity.ok(ApiResponse.success("Team member status updated successfully", updated));
+    }
+
+    /**
+     * PUT /api/team-members/{id}/reset-password
+     * Reset password for a team member account.
+     */
+    @PutMapping("/{id}/reset-password")
+    public ResponseEntity<ApiResponse<UserResponse>> resetPassword(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String newPassword = body != null ? body.get("password") : null;
+        if (newPassword == null || newPassword.trim().length() < 6) {
+            throw new BusinessRuleException("Password must be at least 6 characters.");
+        }
+        UserResponse updated = teamMemberService.resetPassword(id, newPassword.trim());
+        return ResponseEntity.ok(ApiResponse.success("Password reset successfully", updated));
     }
 
     /**

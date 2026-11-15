@@ -158,6 +158,7 @@ export const api = {
   getTeamMembers: () => request('/team-members'),
   createTeamMember: (data) => request('/team-members', { method: 'POST', body: data }),
   toggleTeamMemberStatus: (id) => request(`/team-members/${id}/toggle-status`, { method: 'PUT' }),
+  resetTeamMemberPassword: (id, password) => request(`/team-members/${id}/reset-password`, { method: 'PUT', body: { password } }),
   deleteTeamMember: (id) => request(`/team-members/${id}`, { method: 'DELETE' }),
 }
 

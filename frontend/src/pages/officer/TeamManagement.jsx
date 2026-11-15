@@ -17,6 +17,7 @@ import {
   Search,
   ExternalLink,
   Sparkles,
+  KeyRound,
 } from 'lucide-react'
 import { api } from '../../api/client.js'
 import Modal from '../../components/ui/Modal.jsx'
@@ -41,6 +42,12 @@ export default function TeamManagement() {
   // Handover Slip State (shown after adding a team member)
   const [handoverData, setHandoverData] = useState(null)
   const [copied, setCopied] = useState(false)
+
+  // Reset Password State
+  const [resetMember, setResetMember] = useState(null)
+  const [resetPwd, setResetPwd] = useState('')
+  const [resetSubmitting, setResetSubmitting] = useState(false)
+  const [resetError, setResetError] = useState('')
 
   // Action Loading
   const [actionLoadingId, setActionLoadingId] = useState(null)
@@ -135,6 +142,32 @@ export default function TeamManagement() {
       alert(err.message || 'Failed to remove member. They might have active drive records.')
     } finally {
       setActionLoadingId(null)
+    }
+  }
+
+  async function handleResetPassword(e) {
+    e.preventDefault()
+    if (!resetMember) return
+    if (resetPwd.length < 6) {
+      setResetError('Password must be at least 6 characters.')
+      return
+    }
+    setResetSubmitting(true)
+    setResetError('')
+    try {
+      await api.resetTeamMemberPassword(resetMember.userId, resetPwd)
+      setHandoverData({
+        fullName: resetMember.fullName,
+        email: resetMember.email,
+        password: resetPwd,
+        role: 'Placement Team Portal',
+      })
+      setResetMember(null)
+      setResetPwd('')
+    } catch (err) {
+      setResetError(err.message || 'Failed to reset password.')
+    } finally {
+      setResetSubmitting(false)
     }
   }
 
@@ -314,6 +347,31 @@ export default function TeamManagement() {
                         >
                           <Power size={13} />
                           <span>{m.isActive ? 'Deactivate' : 'Activate'}</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setResetMember(m)
+                            setResetPwd('')
+                            setResetError('')
+                          }}
+                          disabled={actionLoadingId === m.userId}
+                          title="Reset account password"
+                          style={{
+                            padding: '6px 10px',
+                            borderRadius: '6px',
+                            border: '1px solid #cbd5e1',
+                            background: '#f8fafc',
+                            color: '#0b1f3a',
+                            cursor: 'pointer',
+                            fontSize: '0.78rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          <KeyRound size={13} />
+                          <span>Reset Pwd</span>
                         </button>
 
                         <button
@@ -523,6 +581,82 @@ export default function TeamManagement() {
               </button>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {/* Reset Password Modal */}
+      {resetMember && (
+        <Modal
+          title={`Reset Password: ${resetMember.fullName}`}
+          onClose={() => setResetMember(null)}
+        >
+          <form onSubmit={handleResetPassword} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <p style={{ margin: 0, fontSize: '0.88rem', color: '#64748b', lineHeight: 1.5 }}>
+              Issue a new institutional password for <strong>{resetMember.email}</strong>. Once submitted, an updated credentials slip will be generated.
+            </p>
+
+            {resetError && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', padding: '10px 12px', borderRadius: '8px', fontSize: '0.85rem' }}>
+                {resetError}
+              </div>
+            )}
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#334155' }}>
+                  New Password *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%^&*'
+                    let pwd = ''
+                    for (let i = 0; i < 10; i++) pwd += chars.charAt(Math.floor(Math.random() * chars.length))
+                    setResetPwd(pwd)
+                  }}
+                  style={{ background: 'none', border: 'none', color: '#0b1f3a', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                >
+                  <Sparkles size={12} /> Generate Strong Password
+                </button>
+              </div>
+
+              <input
+                type="text"
+                placeholder="Minimum 6 characters (e.g. Ravikiran@123)"
+                value={resetPwd}
+                onChange={(e) => setResetPwd(e.target.value)}
+                required
+                style={{ width: '100%', padding: '9px 12px', fontSize: '0.9rem', border: '1.5px solid #cbd5e1', borderRadius: '8px', outline: 'none' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+              <button
+                type="button"
+                onClick={() => setResetMember(null)}
+                style={{ padding: '9px 16px', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.88rem', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={resetSubmitting}
+                style={{ padding: '9px 20px', background: '#0b1f3a', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '0.88rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                {resetSubmitting ? (
+                  <>
+                    <Loader2 size={16} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
+                    <span>Updating...</span>
+                  </>
+                ) : (
+                  <>
+                    <KeyRound size={16} />
+                    <span>Update Password</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </Modal>
       )}
     </div>

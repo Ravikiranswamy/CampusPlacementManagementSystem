@@ -55,11 +55,11 @@ export default function Topbar({ navItems, user, query, onQueryChange, onMenuCli
 
       <div className="topbar-user">
         <span className="avatar" aria-hidden="true">
-          {initials(user.name)}
+          {initials(user?.name)}
         </span>
         <span className="user-meta">
-          <span className="user-name">{user.name}</span>
-          <span className="user-role">{user.role}</span>
+          <span className="user-name">{user?.name || 'User'}</span>
+          <span className="user-role">{user?.role || ''}</span>
         </span>
         <button type="button" className="sign-out" onClick={onLogout}>
           <LogOut size={16} aria-hidden="true" />
