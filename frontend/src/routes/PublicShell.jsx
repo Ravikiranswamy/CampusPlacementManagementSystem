@@ -27,8 +27,8 @@ export default function PublicShell() {
               <GraduationCap size={22} />
             </div>
             <div>
-              <div className="public-brand-title">JSS Science & Technology University</div>
-              <div className="public-brand-subtitle">Department of Training & Placement</div>
+              <div className="public-brand-title">Campus Placement Platform</div>
+              <div className="public-brand-subtitle">JSS Science & Technology University</div>
             </div>
           </Link>
 
@@ -50,14 +50,6 @@ export default function PublicShell() {
                   className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
                 >
                   Past Recruiters
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/team-directory"
-                  className={({ isActive }) => `public-nav-link ${isActive ? 'active' : ''}`}
-                >
-                  Placement Team
                 </NavLink>
               </li>
               <li>
@@ -87,16 +79,10 @@ export default function PublicShell() {
                 <ArrowRight size={15} />
               </Link>
             ) : (
-              <>
-                <Link to="/register" className="public-btn-register">
-                  <UserPlus size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
-                  Student Register
-                </Link>
-                <Link to="/login" className="public-btn-login">
-                  <LogIn size={14} />
-                  <span>Sign In</span>
-                </Link>
-              </>
+              <Link to="/login" className="public-btn-login">
+                <LogIn size={15} />
+                <span>Login or Register</span>
+              </Link>
             )}
           </div>
         </div>
@@ -114,12 +100,12 @@ export default function PublicShell() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <GraduationCap size={20} color="#c4a35a" />
               <strong style={{ color: '#ffffff', fontSize: '1rem' }}>
-                JSS Science & Technology University
+                Campus Placement Platform
               </strong>
             </div>
             <p style={{ lineHeight: 1.6, margin: '0 0 14px' }}>
-              SJCE Campus, Mysuru - 570006, Karnataka, India.  
-              The Training & Placement Cell bridges academic excellence and career success by partnering with top-tier global recruiters.
+              Supporting JSS Science & Technology University, Mysuru.  
+              An integrated recruitment platform powering campus drives, automated eligibility validation, and transparent student placements.
             </p>
             <div style={{ display: 'flex', gap: '10px' }}>
               <span className="badge-pill" style={{ background: 'rgba(255,255,255,0.08)', color: '#cbd5e1', fontSize: '0.76rem', padding: '4px 8px', borderRadius: '4px' }}>
@@ -134,9 +120,8 @@ export default function PublicShell() {
           <div className="footer-col">
             <h4>Quick Links</h4>
             <ul className="footer-links">
-              <li><Link to="/">About Us</Link></li>
-              <li><Link to="/recruiters">Visiting Companies</Link></li>
-              <li><Link to="/team-directory">Branch Secretaries & HODs</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/recruiters">Past Recruiters</Link></li>
               <li><Link to="/faq">Placement Rules & FAQ</Link></li>
               <li><Link to="/contact">Contact Office</Link></li>
             </ul>
@@ -145,10 +130,10 @@ export default function PublicShell() {
           <div className="footer-col">
             <h4>Portal Access</h4>
             <ul className="footer-links">
-              <li><Link to="/login">Student Portal Login</Link></li>
-              <li><Link to="/register">Student Self-Registration</Link></li>
+              <li><Link to="/login">Student Portal</Link></li>
               <li><Link to="/login">Placement Team Console</Link></li>
-              <li><Link to="/login">Officer Administration</Link></li>
+              <li><Link to="/login">Placement Officer Portal</Link></li>
+              <li><Link to="/register">Student Self-Registration</Link></li>
             </ul>
           </div>
 

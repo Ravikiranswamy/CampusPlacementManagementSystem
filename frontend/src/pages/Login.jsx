@@ -91,9 +91,9 @@ export default function Login() {
             <GraduationCap size={24} />
           </div>
           <div>
-            <p className="brand-kicker">JSS Science & Technology University</p>
+            <p className="brand-kicker">Campus Placement Platform</p>
             <span style={{ fontSize: '0.88rem', color: '#cbd5e1', fontWeight: 500 }}>
-              Department of Computer Science & Engineering
+              JSS Science &amp; Technology University
             </span>
           </div>
         </div>
