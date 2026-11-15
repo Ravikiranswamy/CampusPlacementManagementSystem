@@ -196,7 +196,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     private StudentResponse mapToResponse(Student student) {
-        return new StudentResponse(
+        StudentResponse res = new StudentResponse(
                 student.getStudentId(),
                 student.getUser().getFullName(),
                 student.getUser().getEmail(),
@@ -211,6 +211,28 @@ public class StudentServiceImpl implements StudentService {
                 student.getResumeUrl(),
                 student.getCreatedAt()
         );
+
+        res.setSscPercentage(student.getSscPercentage());
+        res.setHscPercentage(student.getHscPercentage());
+        res.setAdmissionQuota(student.getAdmissionQuota());
+        res.setEntranceRank(student.getEntranceRank());
+        res.setGapYears(student.getGapYears());
+        res.setHistoryBacklogs(student.getHistoryBacklogs());
+        res.setSem1Sgpa(student.getSem1Sgpa());
+        res.setSem2Sgpa(student.getSem2Sgpa());
+        res.setSem3Sgpa(student.getSem3Sgpa());
+        res.setSem4Sgpa(student.getSem4Sgpa());
+        res.setSem5Sgpa(student.getSem5Sgpa());
+        res.setSem6Sgpa(student.getSem6Sgpa());
+        res.setSem7Sgpa(student.getSem7Sgpa());
+        res.setSem8Sgpa(student.getSem8Sgpa());
+        res.setGender(student.getGender());
+        res.setDateOfBirth(student.getDateOfBirth());
+        res.setNativePlace(student.getNativePlace());
+        res.setParentName(student.getParentName());
+        res.setPermanentAddress(student.getPermanentAddress());
+
+        return res;
     }
 }
 
