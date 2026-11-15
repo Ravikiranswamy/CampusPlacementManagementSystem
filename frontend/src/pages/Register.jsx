@@ -370,6 +370,12 @@ export default function Register() {
                   <ArrowLeft size={14} style={{ verticalAlign: 'middle' }} /> Sign In
                 </Link>
               </div>
+
+              <div style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.85rem' }}>
+                <Link to="/" style={{ color: '#64748b', textDecoration: 'none' }}>
+                  ← Back to Placement Home
+                </Link>
+              </div>
             </form>
           )}
         </div>

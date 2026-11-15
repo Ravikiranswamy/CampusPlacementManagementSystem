@@ -6,6 +6,7 @@ import {
   ChartColumn,
   ClipboardList,
   FileText,
+  HelpCircle,
   LayoutDashboard,
   ListChecks,
   ScrollText,
@@ -23,6 +24,7 @@ export const studentNav = [
       { to: '/student/eligibility', label: 'Eligibility', icon: BadgeCheck },
       { to: '/student/applications', label: 'My applications', icon: FileText },
       { to: '/student/status', label: 'Application status', icon: ClipboardList },
+      { to: '/student/faq', label: 'FAQ & Guidelines', icon: HelpCircle },
     ],
   },
 ]

@@ -1,6 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { DataProvider } from './context/DataContext.jsx'
+import PublicShell from './routes/PublicShell.jsx'
+import Home from './pages/public/Home.jsx'
+import PastRecruiters from './pages/public/PastRecruiters.jsx'
+import PlacementTeam from './pages/public/PlacementTeam.jsx'
+import Faq from './pages/public/Faq.jsx'
+import ContactUs from './pages/public/ContactUs.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import ApplicationStatus from './pages/student/ApplicationStatus.jsx'
@@ -22,16 +28,28 @@ import TeamOverview from './pages/team/TeamOverview.jsx'
 import RoleShell from './routes/RoleShell.jsx'
 import { officerNav, studentNav, teamNav } from './routes/navConfig.jsx'
 
-function HomeRedirect() {
+function CatchAllRedirect() {
   const { session } = useAuth()
-  return <Navigate to={session ? session.home : '/login'} replace />
+  return <Navigate to={session ? session.home : '/'} replace />
 }
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* Public University Orientation & Placement Pages */}
+      <Route element={<PublicShell />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/recruiters" element={<PastRecruiters />} />
+        <Route path="/team-directory" element={<PlacementTeam />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/contact" element={<ContactUs />} />
+      </Route>
+
+      {/* Authentication */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Student Portal */}
       <Route element={<RoleShell role="student" navItems={studentNav} />}>
         <Route path="/student" element={<StudentOverview />} />
         <Route path="/student/profile" element={<StudentProfile />} />
@@ -39,7 +57,10 @@ function AppRoutes() {
         <Route path="/student/eligibility" element={<Eligibility />} />
         <Route path="/student/applications" element={<MyApplications />} />
         <Route path="/student/status" element={<ApplicationStatus />} />
+        <Route path="/student/faq" element={<Faq />} />
       </Route>
+
+      {/* Placement Team Portal */}
       <Route element={<RoleShell role="team" navItems={teamNav} />}>
         <Route path="/team" element={<TeamOverview />} />
         <Route path="/team/companies" element={<Companies />} />
@@ -47,6 +68,8 @@ function AppRoutes() {
         <Route path="/team/drives" element={<TeamDrives />} />
         <Route path="/team/eligibility" element={<TeamEligibility />} />
       </Route>
+
+      {/* Placement Officer Portal */}
       <Route element={<RoleShell role="officer" navItems={officerNav} />}>
         <Route path="/officer" element={<OfficerOverview />} />
         <Route path="/officer/students" element={<Students />} />
@@ -54,8 +77,9 @@ function AppRoutes() {
         <Route path="/officer/selections" element={<Selections />} />
         <Route path="/officer/offers" element={<Offers />} />
       </Route>
-      <Route path="/" element={<HomeRedirect />} />
-      <Route path="*" element={<HomeRedirect />} />
+
+      {/* Fallback Redirect */}
+      <Route path="*" element={<CatchAllRedirect />} />
     </Routes>
   )
 }

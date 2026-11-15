@@ -252,6 +252,15 @@ export default function Login() {
                 Create your account <UserPlus size={14} style={{ verticalAlign: 'middle' }} />
               </Link>
             </div>
+
+            <div style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.85rem' }}>
+              <Link
+                to="/"
+                style={{ color: '#64748b', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              >
+                ← Back to Placement Home
+              </Link>
+            </div>
           </form>
         </div>
       </section>
