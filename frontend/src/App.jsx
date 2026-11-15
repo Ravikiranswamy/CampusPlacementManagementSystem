@@ -55,11 +55,11 @@ function AppRoutes() {
       {/* Student Portal */}
       <Route element={<RoleShell role="student" navItems={studentNav} />}>
         <Route path="/student" element={<StudentOverview />} />
-        <Route path="/student/profile" element={<StudentProfile />} />
-        <Route path="/student/drives" element={<StudentOverview />} />
-        <Route path="/student/eligibility" element={<Navigate to="/student" replace />} />
-        <Route path="/student/applications" element={<MyApplications />} />
         <Route path="/student/status" element={<ApplicationStatus />} />
+        <Route path="/student/profile" element={<StudentProfile />} />
+        <Route path="/student/drives" element={<Navigate to="/student" replace />} />
+        <Route path="/student/eligibility" element={<Navigate to="/student" replace />} />
+        <Route path="/student/applications" element={<Navigate to="/student/status" replace />} />
         <Route path="/student/jds" element={<JobDescriptions />} />
         <Route path="/student/feedback" element={<InterviewFeedback />} />
         <Route path="/student/faq" element={<Faq />} />

@@ -18,7 +18,6 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { api } from '../../api/client.js'
-import DataTable from '../../components/ui/DataTable.jsx'
 import StatCard from '../../components/ui/StatCard.jsx'
 import StatusBadge from '../../components/ui/StatusBadge.jsx'
 import Modal from '../../components/ui/Modal.jsx'
@@ -165,10 +164,6 @@ export default function StudentOverview() {
       : activeTab === 'others'
       ? filterList(otherDrives)
       : filterList(registeredDrives)
-
-  const visibleApplications = applications.filter((app) =>
-    matchesQuery(query, [app.companyName, app.roleTitle, app.status]),
-  )
 
   const hasCgpa = student?.cgpa != null && Number(student.cgpa) > 0
 
@@ -575,37 +570,6 @@ export default function StudentOverview() {
             </div>
           )}
         </div>
-      </section>
-
-      {/* Recent Applications Section */}
-      <section className="panel">
-        <div className="panel-head">
-          <h2>My Recent Applications</h2>
-          <p style={{ color: 'var(--color-muted)' }}>Real-time status updates from recruitment drives.</p>
-        </div>
-        <DataTable
-          columns={[
-            {
-              key: 'applicationId',
-              header: 'App ID',
-              render: (row) => `#APP-${row.applicationId}`,
-            },
-            { key: 'companyName', header: 'Company' },
-            { key: 'roleTitle', header: 'Role' },
-            {
-              key: 'appliedAt',
-              header: 'Applied Date',
-              render: (row) => (row.appliedAt ? formatDeadline(row.appliedAt.split('T')[0]) : 'Recent'),
-            },
-            {
-              key: 'status',
-              header: 'Status',
-              render: (row) => <StatusBadge value={row.status} />,
-            },
-          ]}
-          rows={visibleApplications}
-          empty="You have not submitted any applications yet."
-        />
       </section>
 
       {/* Registration Confirmation Modal */}
