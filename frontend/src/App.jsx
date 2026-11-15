@@ -56,8 +56,8 @@ function AppRoutes() {
       <Route element={<RoleShell role="student" navItems={studentNav} />}>
         <Route path="/student" element={<StudentOverview />} />
         <Route path="/student/profile" element={<StudentProfile />} />
-        <Route path="/student/drives" element={<PlacementDrives />} />
-        <Route path="/student/eligibility" element={<Eligibility />} />
+        <Route path="/student/drives" element={<StudentOverview />} />
+        <Route path="/student/eligibility" element={<Navigate to="/student" replace />} />
         <Route path="/student/applications" element={<MyApplications />} />
         <Route path="/student/status" element={<ApplicationStatus />} />
         <Route path="/student/jds" element={<JobDescriptions />} />

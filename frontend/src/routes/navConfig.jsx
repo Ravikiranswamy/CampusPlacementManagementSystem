@@ -1,5 +1,4 @@
 import {
-  BadgeCheck,
   Briefcase,
   Building,
   CalendarDays,
@@ -8,6 +7,7 @@ import {
   FileDown,
   FileText,
   HelpCircle,
+  Home,
   LayoutDashboard,
   ListChecks,
   MessageSquareQuote,
@@ -21,11 +21,10 @@ export const studentNav = [
   {
     label: 'Student',
     items: [
-      { to: '/student', label: 'Overview', icon: LayoutDashboard, end: true },
+      { to: '/student', label: 'Home', icon: Home, end: true },
       { to: '/student/profile', label: 'Profile', icon: UserRound },
       { to: '/student/drives', label: 'Register for companies', icon: Briefcase },
       { to: '/student/jds', label: 'Job descriptions', icon: FileDown },
-      { to: '/student/eligibility', label: 'Eligibility', icon: BadgeCheck },
       { to: '/student/applications', label: 'My applications', icon: FileText },
       { to: '/student/status', label: 'Application status', icon: ClipboardList },
       { to: '/student/feedback', label: 'Interview feedback', icon: MessageSquareQuote },
