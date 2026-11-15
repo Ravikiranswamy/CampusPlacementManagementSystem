@@ -387,182 +387,307 @@ export default function StudentOverview() {
               </h3>
             </div>
           ) : (
-            <div className="drive-cards-list">
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 420px))',
+                gap: '24px',
+                justifyContent: 'start',
+              }}
+            >
               {activeList.map((drive) => {
                 const elig = drive.eligibility || {}
-                const depts = elig.eligibleDepartments?.map((d) => d.departmentCode).join(', ') || 'All Branches'
                 const deadlineDate = drive.registrationDeadline ? new Date(drive.registrationDeadline) : null
                 const driveDate = drive.driveDate ? new Date(drive.driveDate) : null
 
+                const formatCardDate = (d) => {
+                  if (!d || isNaN(d.getTime())) return 'To Be Announced'
+                  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+                }
+
+                const formatCardDeadline = (d) => {
+                  if (!d || isNaN(d.getTime())) return 'TBA'
+                  const day = String(d.getDate()).padStart(2, '0')
+                  const month = String(d.getMonth() + 1).padStart(2, '0')
+                  const year = d.getFullYear()
+                  let hours = d.getHours()
+                  const minutes = String(d.getMinutes()).padStart(2, '0')
+                  const ampm = hours >= 12 ? 'PM' : 'AM'
+                  hours = hours % 12 || 12
+                  const formattedHours = String(hours).padStart(2, '0')
+                  return `${day}/${month}/${year}, ${formattedHours}:${minutes} ${ampm}`
+                }
+
                 return (
-                  <div key={drive.driveId} className="drive-card-item">
-                    <div className="drive-card-header">
-                      <div className="drive-card-title">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Building2 size={18} style={{ color: '#0b1f3a' }} />
-                          <h3>{drive.companyName}</h3>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              padding: '2px 8px',
-                              borderRadius: '4px',
-                              background: drive.jobType === 'Internship' ? '#fef3c7' : '#e0e7ff',
-                              color: drive.jobType === 'Internship' ? '#92400e' : '#3730a3',
-                            }}
-                          >
-                            {drive.jobType || 'Full-time'}
-                          </span>
-                        </div>
-                        <p>{drive.roleTitle} • {drive.workLocation || 'Pan-India'}</p>
-                      </div>
+                  <div
+                    key={drive.driveId}
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '10px',
+                      padding: '24px 26px',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      minHeight: '440px',
+                    }}
+                  >
+                    <div>
+                      {/* Drive / Role Title */}
+                      <h3
+                        style={{
+                          margin: '0 0 22px 0',
+                          fontSize: '1.25rem',
+                          fontWeight: 800,
+                          color: '#111827',
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {drive.driveTitle || `${drive.companyName} for ${drive.roleTitle}`}
+                      </h3>
 
-                      <div className="drive-pkg-badge">
-                        <span className="drive-pkg-value">{formatPackage(drive.packageLpa)}</span>
-                        <span className="drive-pkg-type">{drive.jobType === 'Internship' ? 'Stipend / CTC' : 'Full-time CTC'}</span>
-                      </div>
-                    </div>
-
-                    {/* Criteria & Attributes Strip */}
-                    <div className="drive-attributes-grid">
-                      <div className="drive-attr-item">
-                        <dt>Cutoff (Min CGPA)</dt>
-                        <dd>{elig.minCgpa ? `${elig.minCgpa} CGPA` : 'No Cutoff'}</dd>
-                      </div>
-                      <div className="drive-attr-item">
-                        <dt>Backlogs Allowed</dt>
-                        <dd>
-                          {elig.maxActiveBacklogs === 0
-                            ? 'No (0 backlogs)'
-                            : `Yes (Up to ${elig.maxActiveBacklogs})`}
-                        </dd>
-                      </div>
-                      <div className="drive-attr-item">
-                        <dt>Eligible Branches</dt>
-                        <dd>{depts}</dd>
-                      </div>
-                      <div className="drive-attr-item">
-                        <dt>Target Batch</dt>
-                        <dd>{elig.eligibleGraduationYear ? `${elig.eligibleGraduationYear} Batch` : 'Current Batch'}</dd>
-                      </div>
-                    </div>
-
-                    {/* Ineligibility Reasons Banner (for OTHERS tab) */}
-                    {activeTab === 'others' && drive.reasons && (
-                      <div className="drive-ineligible-banner">
-                        <strong>Reasons for Ineligibility:</strong>
-                        <ul style={{ margin: '4px 0 0', paddingLeft: '18px' }}>
-                          {drive.reasons.map((reason, idx) => (
-                            <li key={idx}>{reason}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* JD Attachments Strip */}
-                    {(drive.jd1Url || drive.jd2Url || drive.jd3Url) && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Job Descriptions:</span>
-                        {drive.jd1Url && (
-                          <a
-                            href={drive.jd1Url.startsWith('http') ? drive.jd1Url : `https://${drive.jd1Url}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                          >
-                            <span>JD 1</span> <ExternalLink size={11} />
-                          </a>
-                        )}
-                        {drive.jd2Url && (
-                          <a
-                            href={drive.jd2Url.startsWith('http') ? drive.jd2Url : `https://${drive.jd2Url}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                          >
-                            <span>JD 2</span> <ExternalLink size={11} />
-                          </a>
-                        )}
-                        {drive.jd3Url && (
-                          <a
-                            href={drive.jd3Url.startsWith('http') ? drive.jd3Url : `https://${drive.jd3Url}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                          >
-                            <span>JD 3</span> <ExternalLink size={11} />
-                          </a>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Card Footer with Deadlines & Action Button */}
-                    <div className="drive-card-footer">
-                      <div className="drive-deadlines">
-                        <div className="deadline-item">
-                          <Clock size={15} style={{ color: '#d97706' }} />
-                          <span>
-                            Deadline:{' '}
-                            <strong>
-                              {deadlineDate
-                                ? deadlineDate.toLocaleDateString('en-IN', {
-                                    day: 'numeric',
-                                    month: 'short',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                  })
-                                : 'TBA'}
-                            </strong>
-                          </span>
-                        </div>
-
-                        <div className="deadline-item">
-                          <Calendar size={15} style={{ color: '#2563eb' }} />
-                          <span>
-                            Drive Date:{' '}
-                            <strong>
-                              {driveDate
-                                ? driveDate.toLocaleDateString('en-IN', {
-                                    day: 'numeric',
-                                    month: 'short',
-                                    year: 'numeric',
-                                  })
-                                : 'To Be Announced'}
-                            </strong>
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons based on Active Tab */}
-                      <div>
-                        {activeTab === 'eligible' && (
-                          <button
-                            type="button"
-                            className="register-btn"
-                            onClick={() => setConfirmingDrive(drive)}
-                          >
-                            Register for Drive
-                          </button>
-                        )}
-
-                        {activeTab === 'others' && (
-                          <button type="button" className="ineligible-btn-locked" disabled>
-                            <Lock size={14} /> Ineligible
-                          </button>
-                        )}
-
-                        {activeTab === 'registered' && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <button type="button" className="registered-btn-locked" disabled>
-                              <CheckCircle2 size={15} color="#059669" /> Registered
-                            </button>
-                            <span style={{ fontSize: '0.78rem', color: '#047857', fontWeight: 600 }}>
-                              Status: {drive.application?.status || 'SUBMITTED'}
-                            </span>
+                      {/* 2-Column Key-Value Grid */}
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 1fr',
+                          rowGap: '16px',
+                          columnGap: '20px',
+                          marginBottom: '20px',
+                        }}
+                      >
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Intern Stipend
                           </div>
-                        )}
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                            {drive.stipendMonthly
+                              ? Number(drive.stipendMonthly).toLocaleString('en-IN')
+                              : '21,000'}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Fulltime CTC
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                            {drive.packageLpa != null ? Number(drive.packageLpa) : '8'}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Backlogs Allowed
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                            {(elig.maxActiveBacklogs ?? 0) > 0 ? 'Yes' : 'No'}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Cutoff-10th
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>0</div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Cutoff-12th
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>0</div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Cutoff-BE
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                            {elig.minCgpa != null ? Number(elig.minCgpa) : 0}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Cutoff-PG
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>0</div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                            Date
+                          </div>
+                          <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                            {formatCardDate(driveDate)}
+                          </div>
+                        </div>
                       </div>
+
+                      {/* Deadline */}
+                      <div style={{ marginBottom: '22px' }}>
+                        <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#111827' }}>
+                          Deadline
+                        </div>
+                        <div style={{ fontSize: '0.95rem', color: '#374151', marginTop: '2px' }}>
+                          {formatCardDeadline(deadlineDate)}
+                        </div>
+                      </div>
+
+                      {/* Ineligibility Reason Banner (OTHERS tab) */}
+                      {activeTab === 'others' && drive.reasons && (
+                        <div
+                          style={{
+                            background: '#fffbeb',
+                            border: '1px solid #fde68a',
+                            borderRadius: '6px',
+                            padding: '10px 12px',
+                            marginBottom: '16px',
+                            fontSize: '0.84rem',
+                            color: '#92400e',
+                          }}
+                        >
+                          <strong>Not Eligible:</strong>
+                          <ul style={{ margin: '4px 0 0', paddingLeft: '18px' }}>
+                            {drive.reasons.map((reason, idx) => (
+                              <li key={idx}>{reason}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Job Description Attachments */}
+                      {(drive.jd1Url || drive.jd2Url || drive.jd3Url) && (
+                        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569' }}>JDs:</span>
+                          {drive.jd1Url && (
+                            <a
+                              href={drive.jd1Url.startsWith('http') ? drive.jd1Url : `https://${drive.jd1Url}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                fontSize: '0.78rem',
+                                color: '#1d4ed8',
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                padding: '2px 8px',
+                                borderRadius: '4px',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                              }}
+                            >
+                              JD 1
+                            </a>
+                          )}
+                          {drive.jd2Url && (
+                            <a
+                              href={drive.jd2Url.startsWith('http') ? drive.jd2Url : `https://${drive.jd2Url}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                fontSize: '0.78rem',
+                                color: '#1d4ed8',
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                padding: '2px 8px',
+                                borderRadius: '4px',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                              }}
+                            >
+                              JD 2
+                            </a>
+                          )}
+                          {drive.jd3Url && (
+                            <a
+                              href={drive.jd3Url.startsWith('http') ? drive.jd3Url : `https://${drive.jd3Url}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                fontSize: '0.78rem',
+                                color: '#1d4ed8',
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                padding: '2px 8px',
+                                borderRadius: '4px',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                              }}
+                            >
+                              JD 3
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Bottom Action Button matching user spec */}
+                    <div>
+                      {activeTab === 'eligible' && (
+                        <button
+                          type="button"
+                          onClick={() => setConfirmingDrive(drive)}
+                          style={{
+                            width: '100%',
+                            padding: '12px',
+                            background: '#0b1f3a',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontSize: '1rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            letterSpacing: '0.02em',
+                            transition: 'background 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = '#1e3a5f')}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = '#0b1f3a')}
+                        >
+                          Register
+                        </button>
+                      )}
+
+                      {activeTab === 'others' && (
+                        <button
+                          type="button"
+                          disabled
+                          style={{
+                            width: '100%',
+                            padding: '12px',
+                            background: '#94a3b8',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            cursor: 'not-allowed',
+                          }}
+                        >
+                          Ineligible
+                        </button>
+                      )}
+
+                      {activeTab === 'registered' && (
+                        <button
+                          type="button"
+                          disabled
+                          style={{
+                            width: '100%',
+                            padding: '12px',
+                            background: '#5a626e',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            cursor: 'default',
+                          }}
+                        >
+                          Registered
+                        </button>
+                      )}
                     </div>
                   </div>
                 )
