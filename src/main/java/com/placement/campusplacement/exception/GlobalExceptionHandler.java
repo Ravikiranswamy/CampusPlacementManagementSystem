@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleGeneric(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("An unexpected error occurred. Please contact support."));
+                .body(ApiResponse.error("Server Error: " + ex.getClass().getSimpleName() + " - " + ex.getMessage()));
     }
 }
 
