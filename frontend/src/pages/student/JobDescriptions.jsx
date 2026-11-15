@@ -1,21 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { api } from '../../api/client.js'
-import { formatPackage, matchesQuery } from '../../data/mockData.js'
+import { matchesQuery } from '../../data/mockData.js'
 import { usePageQuery } from '../../hooks/usePageQuery.js'
 import {
-  FileText,
   Download,
-  ExternalLink,
   Search,
-  Building2,
-  Calendar,
-  Clock,
-  Briefcase,
   Loader2,
-  ChevronRight,
-  Sparkles,
-  FileDown,
+  Ban,
+  Building2,
+  FileText,
 } from 'lucide-react'
 
 export default function JobDescriptions() {
@@ -54,283 +47,324 @@ export default function JobDescriptions() {
     ])
   })
 
-  function renderJdPill(label, url) {
+  function formatDateTime(dateVal) {
+    if (!dateVal) return 'To Be Announced'
+    const d = new Date(dateVal)
+    if (isNaN(d.getTime())) return String(dateVal)
+    const month = d.getMonth() + 1
+    const day = d.getDate()
+    const year = d.getFullYear()
+    const timeStr = d.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    })
+    return `${month}/${day}/${year}, ${timeStr}`
+  }
+
+  function renderJdButton(label, url) {
     if (!url) {
       return (
         <span
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '4px',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            padding: '4px 10px',
+            gap: '6px',
+            padding: '5px 12px',
             borderRadius: '6px',
-            background: '#f1f5f9',
-            color: '#94a3b8',
-            border: '1px solid #e2e8f0',
+            border: '1px solid #fca5a5',
+            background: '#ffffff',
+            color: '#ef4444',
+            fontSize: '0.84rem',
+            fontWeight: 600,
           }}
         >
-          {label}: N/A
+          <Ban size={14} />
+          <span>{label} (N/A)</span>
         </span>
       )
     }
 
+    const targetUrl = url.startsWith('http') ? url : `https://${url}`
+
     return (
       <a
-        href={url.startsWith('http') ? url : `https://${url}`}
+        href={targetUrl}
         target="_blank"
         rel="noreferrer"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '5px',
-          fontSize: '0.78rem',
-          fontWeight: 700,
-          padding: '4px 12px',
+          gap: '6px',
+          padding: '5px 14px',
           borderRadius: '6px',
-          background: '#eff6ff',
+          border: '1px solid #93c5fd',
+          background: '#ffffff',
           color: '#1d4ed8',
-          border: '1px solid #bfdbfe',
+          fontSize: '0.84rem',
+          fontWeight: 700,
           textDecoration: 'none',
+          boxShadow: '0 1px 2px rgba(37, 99, 235, 0.05)',
           transition: 'all 0.15s ease',
         }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = '#eff6ff'
+          e.currentTarget.style.borderColor = '#60a5fa'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = '#ffffff'
+          e.currentTarget.style.borderColor = '#93c5fd'
+        }}
       >
-        <FileDown size={13} />
+        <Download size={14} />
         <span>{label}</span>
-        <ExternalLink size={11} />
       </a>
     )
   }
 
   return (
-    <div className="page-stack">
+    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '4px 0 32px' }}>
+      {/* Title */}
+      <h1
+        style={{
+          fontSize: '1.65rem',
+          fontWeight: 800,
+          color: '#0f172a',
+          margin: '0 0 16px 0',
+          letterSpacing: '-0.01em',
+        }}
+      >
+        Job Descriptions
+      </h1>
+
       {error && (
-        <div style={{ padding: '0.85rem 1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '8px' }}>
+        <div
+          style={{
+            padding: '0.75rem 1rem',
+            background: '#fee2e2',
+            color: '#991b1b',
+            borderRadius: '6px',
+            marginBottom: '1rem',
+          }}
+        >
           {error}
         </div>
       )}
 
-      {/* Header Banner */}
-      <section className="panel" style={{ background: '#f8fafc', borderLeft: '4px solid #0b1f3a' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <h2 style={{ margin: 0, fontSize: '1.25rem', color: '#0f172a' }}>
-                Company Job Descriptions (JDs)
-              </h2>
-              <span
+      {/* Search Input Box */}
+      <div style={{ position: 'relative', marginBottom: '20px' }}>
+        <Search
+          size={16}
+          style={{
+            position: 'absolute',
+            left: '14px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#9ca3af',
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Search company..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '12px 14px 12px 42px',
+            borderRadius: '8px',
+            border: '1px solid #d1d5db',
+            background: '#ffffff',
+            fontSize: '0.95rem',
+            color: '#111827',
+            outline: 'none',
+            boxSizing: 'border-box',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
+            transition: 'border-color 0.15s ease',
+          }}
+          onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
+          onBlur={(e) => (e.currentTarget.style.borderColor = '#d1d5db')}
+        />
+      </div>
+
+      {/* Loading State */}
+      {loading ? (
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '60px 20px',
+            color: '#64748b',
+            background: '#ffffff',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+          }}
+        >
+          <Loader2 size={26} style={{ animation: 'spin 1s linear infinite' }} />
+          <p style={{ marginTop: '10px', fontSize: '0.92rem' }}>
+            Loading recruitment job descriptions...
+          </p>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '60px 20px',
+            background: '#ffffff',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb',
+            color: '#64748b',
+          }}
+        >
+          <FileText size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+          <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#1f2937' }}>
+            No matching job descriptions found
+          </h3>
+          <p style={{ margin: '6px 0 0', fontSize: '0.88rem' }}>
+            Try adjusting your search query or check back as more companies publish their drives.
+          </p>
+        </div>
+      ) : (
+        /* List of Company Cards */
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          {filtered.map((drive) => {
+            const title =
+              drive.driveTitle ||
+              `${drive.companyName} ${drive.roleTitle || 'Internship'}`
+
+            const packageStr = drive.packageLpa
+              ? `${Number(drive.packageLpa)} LPA`
+              : 'Best in Industry'
+
+            const stipendStr = drive.stipendMonthly
+              ? Number(drive.stipendMonthly).toLocaleString('en-IN')
+              : null
+
+            return (
+              <div
+                key={drive.driveId}
                 style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 800,
-                  background: '#0b1f3a',
-                  color: '#ffffff',
-                  padding: '3px 9px',
-                  borderRadius: '12px',
+                  background: '#ffffff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  padding: '22px 26px',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)',
+                  transition: 'box-shadow 0.15s ease',
                 }}
               >
-                {drives.length} Drives
-              </span>
-            </div>
-            <p style={{ margin: 0, color: '#64748b', fontSize: '0.88rem' }}>
-              Download official recruiter Job Description attachments (JD1, JD2, JD3), salary compensation structures, and drive deadlines.
-            </p>
-          </div>
-
-          <Link
-            to="/student/drives"
-            className="register-btn"
-            style={{ textDecoration: 'none', fontSize: '0.88rem', padding: '8px 16px' }}
-          >
-            <span>Register for Drives →</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* Search Bar & Drives Table / Cards */}
-      <section className="panel">
-        <div style={{ marginBottom: '20px' }}>
-          <div style={{ position: 'relative', width: '320px', maxWidth: '100%' }}>
-            <Search size={15} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
-            <input
-              type="text"
-              placeholder="Search companies or job roles..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '7px 10px 7px 32px',
-                borderRadius: '8px',
-                border: '1.5px solid #cbd5e1',
-                fontSize: '0.85rem',
-                outline: 'none',
-              }}
-            />
-          </div>
-        </div>
-
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
-            <Loader2 size={24} style={{ animation: 'spin 1s linear infinite' }} />
-            <p style={{ marginTop: '8px' }}>Loading job descriptions from database...</p>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '48px 20px', background: '#f8fafc', borderRadius: '10px', color: '#64748b' }}>
-            <FileText size={40} style={{ color: '#cbd5e1', marginBottom: '8px' }} />
-            <h3 style={{ margin: '0 0 6px', color: '#1e293b' }}>No Job Descriptions Available</h3>
-            <p style={{ margin: 0, fontSize: '0.9rem' }}>
-              {drives.length === 0
-                ? 'The placement team has not published any recruitment drives yet.'
-                : 'No companies match your search filter.'}
-            </p>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gap: '14px' }}>
-            {filtered.map((drive) => {
-              const deadlineDate = drive.registrationDeadline ? new Date(drive.registrationDeadline) : null
-              const driveDate = drive.driveDate ? new Date(drive.driveDate) : null
-              const elig = drive.eligibility || {}
-
-              return (
-                <div
-                  key={drive.driveId}
+                {/* Title */}
+                <h2
                   style={{
-                    background: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: '#1f2937',
+                    margin: '0 0 10px 0',
+                    lineHeight: 1.3,
                   }}
                 >
-                  {/* Top: Company, Role & Package */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Building2 size={18} color="#0b1f3a" />
-                        <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#0f172a' }}>
-                          {drive.companyName}
-                        </h3>
-                        <span
-                          style={{
-                            fontSize: '0.74rem',
-                            fontWeight: 700,
-                            padding: '2px 8px',
-                            borderRadius: '4px',
-                            background: drive.jobType === 'Internship' ? '#fef3c7' : '#e0e7ff',
-                            color: drive.jobType === 'Internship' ? '#92400e' : '#3730a3',
-                          }}
-                        >
-                          {drive.jobType || 'Full-time'}
-                        </span>
-                      </div>
-                      <div style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '2px' }}>
-                        {drive.roleTitle} {drive.workLocation ? `• ${drive.workLocation}` : ''}
-                      </div>
-                    </div>
+                  {title}
+                </h2>
 
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                      <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontWeight: 800, color: '#047857', fontSize: '1.2rem' }}>
-                          {formatPackage(drive.packageLpa)}
-                        </div>
-                        <div style={{ color: '#64748b', fontSize: '0.75rem', fontWeight: 600 }}>
-                          FULL-TIME CTC
-                        </div>
-                      </div>
-
-                      {drive.stipendMonthly && (
-                        <div style={{ textAlign: 'right', borderLeft: '1px solid #e2e8f0', paddingLeft: '14px' }}>
-                          <div style={{ fontWeight: 800, color: '#2563eb', fontSize: '1.1rem' }}>
-                            ₹{drive.stipendMonthly}/mo
-                          </div>
-                          <div style={{ color: '#64748b', fontSize: '0.75rem', fontWeight: 600 }}>
-                            MONTHLY STIPEND
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Middle Strip: Schedule & Deadlines */}
-                  <div
+                {/* Pills Row: CTC and Stipend */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    flexWrap: 'wrap',
+                    marginBottom: '14px',
+                  }}
+                >
+                  {/* CTC Pill */}
+                  <span
                     style={{
-                      background: '#f8fafc',
-                      borderRadius: '8px',
-                      padding: '10px 14px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
+                      display: 'inline-flex',
                       alignItems: 'center',
-                      flexWrap: 'wrap',
-                      gap: '12px',
-                      fontSize: '0.85rem',
-                      color: '#475569',
+                      padding: '3px 12px',
+                      borderRadius: '999px',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#059669',
+                      background: '#ecfdf5',
+                      border: '1px solid #a7f3d0',
                     }}
                   >
-                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                        <Clock size={14} color="#d97706" />
-                        Deadline:{' '}
-                        <strong>
-                          {deadlineDate
-                            ? deadlineDate.toLocaleDateString('en-IN', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })
-                            : 'TBA'}
-                        </strong>
-                      </span>
+                    CTC: {packageStr}
+                  </span>
 
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                        <Calendar size={14} color="#2563eb" />
-                        Drive Date:{' '}
-                        <strong>
-                          {driveDate
-                            ? driveDate.toLocaleDateString('en-IN', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                              })
-                            : 'TBA'}
-                        </strong>
-                      </span>
-                    </div>
-
-                    <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                      Cutoff: <strong>{elig.minCgpa ? `${elig.minCgpa} CGPA` : 'None'}</strong> • Backlogs: <strong>{elig.maxActiveBacklogs ?? 0} max</strong>
-                    </div>
-                  </div>
-
-                  {/* Bottom: Up to 3 Downloadable JD Files (JD1, JD2, JD3) */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', paddingTop: '4px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#334155', marginRight: '4px' }}>
-                        Job Description Files:
-                      </span>
-                      {renderJdPill('JD 1', drive.jd1Url)}
-                      {renderJdPill('JD 2', drive.jd2Url)}
-                      {renderJdPill('JD 3', drive.jd3Url)}
-                    </div>
-
-                    <Link
-                      to="/student/drives"
-                      className="secondary-button compact"
-                      style={{ fontSize: '0.82rem', textDecoration: 'none' }}
+                  {/* Stipend Pill */}
+                  {stipendStr && (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '3px 12px',
+                        borderRadius: '999px',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        color: '#0284c7',
+                        background: '#f0f9ff',
+                        border: '1px solid #bae6fd',
+                      }}
                     >
-                      Check Eligibility &amp; Register <ChevronRight size={14} />
-                    </Link>
-                  </div>
+                      Stipend: {stipendStr}
+                    </span>
+                  )}
                 </div>
-              )
-            })}
-          </div>
-        )}
-      </section>
+
+                {/* Drive Date */}
+                <div
+                  style={{
+                    fontSize: '0.92rem',
+                    color: '#374151',
+                    fontWeight: 500,
+                    marginBottom: '4px',
+                  }}
+                >
+                  Drive Date: {formatDateTime(drive.driveDate)}
+                </div>
+
+                {/* Deadline */}
+                <div
+                  style={{
+                    fontSize: '0.92rem',
+                    color: '#374151',
+                    fontWeight: 500,
+                    marginBottom: '14px',
+                  }}
+                >
+                  Deadline: {formatDateTime(drive.registrationDeadline)}
+                </div>
+
+                {/* Job Description Files Header */}
+                <div
+                  style={{
+                    fontSize: '0.92rem',
+                    fontWeight: 700,
+                    color: '#1f2937',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Job Description Files:
+                </div>
+
+                {/* JD Buttons: JD1, JD2, JD3 */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {renderJdButton('JD1', drive.jd1Url)}
+                  {renderJdButton('JD2', drive.jd2Url)}
+                  {renderJdButton('JD3', drive.jd3Url)}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
