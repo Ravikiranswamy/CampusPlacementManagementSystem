@@ -12,6 +12,7 @@ import {
   ListChecks,
   MessageSquareQuote,
   ScrollText,
+  UserCheck,
   UserRound,
   Users,
 } from 'lucide-react'
@@ -52,6 +53,7 @@ export const officerNav = [
     items: [
       { to: '/officer', label: 'Overview', icon: LayoutDashboard, end: true },
       { to: '/officer/students', label: 'Students', icon: Users },
+      { to: '/officer/team', label: 'Placement team', icon: UserCheck },
       { to: '/officer/statistics', label: 'Statistics', icon: ChartColumn },
       { to: '/officer/selections', label: 'Selections', icon: ListChecks },
       { to: '/officer/offers', label: 'Offers', icon: ScrollText },

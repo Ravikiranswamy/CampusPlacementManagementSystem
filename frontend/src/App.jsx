@@ -22,6 +22,7 @@ import Offers from './pages/officer/Offers.jsx'
 import Selections from './pages/officer/Selections.jsx'
 import Statistics from './pages/officer/Statistics.jsx'
 import Students from './pages/officer/Students.jsx'
+import TeamManagement from './pages/officer/TeamManagement.jsx'
 import Companies from './pages/team/Companies.jsx'
 import JobRoles from './pages/team/JobRoles.jsx'
 import TeamDrives from './pages/team/TeamDrives.jsx'
@@ -77,6 +78,7 @@ function AppRoutes() {
       <Route element={<RoleShell role="officer" navItems={officerNav} />}>
         <Route path="/officer" element={<OfficerOverview />} />
         <Route path="/officer/students" element={<Students />} />
+        <Route path="/officer/team" element={<TeamManagement />} />
         <Route path="/officer/statistics" element={<Statistics />} />
         <Route path="/officer/selections" element={<Selections />} />
         <Route path="/officer/offers" element={<Offers />} />

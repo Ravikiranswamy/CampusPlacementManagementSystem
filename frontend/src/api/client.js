@@ -153,5 +153,11 @@ export const api = {
   },
   getFeedbackById: (id) => request(`/feedbacks/${id}`),
   submitFeedback: (data) => request('/feedbacks', { method: 'POST', body: data }),
+
+  // Placement Team Members (Administered by Placement Officer)
+  getTeamMembers: () => request('/team-members'),
+  createTeamMember: (data) => request('/team-members', { method: 'POST', body: data }),
+  toggleTeamMemberStatus: (id) => request(`/team-members/${id}/toggle-status`, { method: 'PUT' }),
+  deleteTeamMember: (id) => request(`/team-members/${id}`, { method: 'DELETE' }),
 }
 
