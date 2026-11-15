@@ -8,7 +8,6 @@ import {
   Loader2,
   ArrowRight,
   AlertCircle,
-  Database,
   Eye,
   EyeOff,
   UserPlus,
@@ -21,13 +20,13 @@ const roleChoices = [
     id: 'student',
     label: 'Student Portal',
     icon: GraduationCap,
-    detail: 'Browse drives, track eligibility & view offer letters',
+    detail: 'Login with USN to view drives, eligibility & offers',
   },
   {
     id: 'team',
     label: 'Placement Team Portal',
     icon: Building2,
-    detail: 'Manage recruiters, job roles & candidate evaluations',
+    detail: 'Manage recruiters, job roles & drive evaluations',
   },
   {
     id: 'officer',
@@ -37,13 +36,11 @@ const roleChoices = [
   },
 ]
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 export default function Login() {
   const { session, login } = useAuth()
   const navigate = useNavigate()
-  const [role, setRole] = useState('')
-  const [email, setEmail] = useState('')
+  const [role, setRole] = useState('student')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -62,8 +59,9 @@ export default function Login() {
     event.preventDefault()
     setError('')
 
-    if (!emailPattern.test(email.trim())) {
-      setError('Please enter a valid university email address.')
+    const trimmedIdentifier = identifier.trim()
+    if (!trimmedIdentifier) {
+      setError(role === 'student' ? 'Please enter your USN or SR number.' : 'Please enter your institutional email or username.')
       return
     }
     if (!password.trim()) {
@@ -73,7 +71,7 @@ export default function Login() {
 
     setLoading(true)
     try {
-      const userSession = await login({ email: email.trim(), password: password.trim() })
+      const userSession = await login({ email: trimmedIdentifier, password: password.trim() })
       navigate(userSession.home, { replace: true })
     } catch (err) {
       setError(err.message || 'Login failed. Please verify credentials or ensure the server is active.')
@@ -82,35 +80,33 @@ export default function Login() {
     }
   }
 
+  const isStudent = role === 'student'
+
   return (
     <main className="login-screen">
       {/* Left University Branding Panel */}
       <section className="login-panel">
         <div className="login-brand-top">
           <div className="brand-mark">
-            <GraduationCap size={24} />
+            <GraduationCap size={22} />
           </div>
           <div>
             <p className="brand-kicker">Campus Placement Platform</p>
-            <span style={{ fontSize: '0.88rem', color: '#cbd5e1', fontWeight: 500 }}>
+            <span style={{ fontSize: '0.82rem', color: '#cbd5e1', fontWeight: 500 }}>
               JSS Science &amp; Technology University
             </span>
           </div>
         </div>
 
         <div className="login-brand-copy">
-          <h1>Campus Placement & Recruitment Portal</h1>
+          <h1>Campus Placement &amp; Recruitment Portal</h1>
           <p>
             A centralized, relational database management platform powering campus hiring, eligibility checks, interview rounds, and offer tracking.
           </p>
         </div>
 
-        <div className="login-footer-badges">
-          <span className="badge-pill">
-            <Database size={13} /> Neon PostgreSQL (16 Tables)
-          </span>
-          <span className="badge-pill">DBMS Course 24CS520</span>
-          <span className="badge-pill">Spring Boot 4.1</span>
+        <div className="login-panel-footer">
+          <span>&copy; {new Date().getFullYear()} JSS Science &amp; Technology University • Mysuru</span>
         </div>
       </section>
 
@@ -143,7 +139,7 @@ export default function Login() {
                         onChange={() => handleRoleChange(choice)}
                       />
                       <div className="role-icon-box">
-                        <Icon size={18} />
+                        <Icon size={16} />
                       </div>
                       <div className="role-text">
                         <strong>{choice.label}</strong>
@@ -155,29 +151,36 @@ export default function Login() {
               </div>
             </fieldset>
 
-            {/* Email Field */}
+            {/* Identifier Field: USN for students, Email for admin/officer */}
             <div className="form-field">
-              <label htmlFor="email-input">Institutional Email</label>
+              <label htmlFor="identifier-input">
+                {isStudent ? 'USN / SR Number' : 'Institutional Email / Username'}
+              </label>
               <div className="input-container">
-                <Mail size={18} className="input-icon" />
+                {isStudent ? (
+                  <GraduationCap size={17} className="input-icon" />
+                ) : (
+                  <Mail size={17} className="input-icon" />
+                )}
                 <input
-                  id="email-input"
-                  type="email"
-                  name="portal_username"
+                  id="identifier-input"
+                  type="text"
+                  name="portal_identifier"
                   autoComplete="off"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.edu"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder={isStudent ? 'e.g. 01JST24UCS120 or 4JC...' : 'name@example.edu'}
+                  style={{ textTransform: isStudent ? 'uppercase' : 'none' }}
                   required
                 />
               </div>
             </div>
 
-            {/* Password Field - Uses custom masked text field to prevent browser data-breach and save-password alerts */}
+            {/* Password Field */}
             <div className="form-field">
               <label htmlFor="password-input">Password</label>
               <div className="input-container" style={{ position: 'relative' }}>
-                <Lock size={18} className="input-icon" />
+                <Lock size={17} className="input-icon" />
                 <input
                   id="password-input"
                   type="text"
@@ -210,7 +213,7 @@ export default function Login() {
                   }}
                   title={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
@@ -218,7 +221,7 @@ export default function Login() {
             {/* Error Message */}
             {error && (
               <div className="login-error-alert" role="alert">
-                <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                <AlertCircle size={16} style={{ flexShrink: 0 }} />
                 <span>{error}</span>
               </div>
             )}
@@ -231,34 +234,40 @@ export default function Login() {
             >
               {loading ? (
                 <>
-                  <Loader2 size={18} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
+                  <Loader2 size={16} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
                   <span>Verifying Credentials...</span>
                 </>
               ) : (
                 <>
                   <span>Enter Portal</span>
-                  <ArrowRight size={18} />
+                  <ArrowRight size={16} />
                 </>
               )}
             </button>
 
-            {/* Register Link for Students */}
-            <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem', color: '#94a3b8' }}>
-              New student?{' '}
-              <Link
-                to="/register"
-                style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}
-              >
-                Create your account <UserPlus size={14} style={{ verticalAlign: 'middle' }} />
-              </Link>
-            </div>
+            {/* Register Link: specifically for students */}
+            {isStudent ? (
+              <div style={{ textAlign: 'center', marginTop: '0.85rem', fontSize: '0.88rem', color: '#64748b' }}>
+                New student?{' '}
+                <Link
+                  to="/register"
+                  style={{ color: '#0b1f3a', fontWeight: 700, textDecoration: 'none' }}
+                >
+                  Register here with USN <UserPlus size={13} style={{ verticalAlign: 'middle' }} />
+                </Link>
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center', marginTop: '0.85rem', fontSize: '0.8rem', color: '#94a3b8' }}>
+                Administrator credentials are issued by the placement cell.
+              </div>
+            )}
 
-            <div style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.85rem' }}>
+            <div style={{ textAlign: 'center', marginTop: '0.5rem', fontSize: '0.82rem' }}>
               <Link
                 to="/"
                 style={{ color: '#64748b', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                ← Back to Placement Home
+                &larr; Back to Placement Home
               </Link>
             </div>
           </form>

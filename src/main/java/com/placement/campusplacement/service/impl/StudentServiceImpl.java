@@ -70,11 +70,31 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicateResourceException("A student with USN '" + usn + "' already exists.");
         }
 
-        Department department = departmentRepository.findById(request.getDepartmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Department", "id", request.getDepartmentId()));
+        Department department = null;
+        if (request.getDepartmentId() != null) {
+            department = departmentRepository.findById(request.getDepartmentId()).orElse(null);
+        }
+        if (department == null) {
+            if (usn.contains("IS") || usn.contains("ISE")) {
+                department = departmentRepository.findByDepartmentCode("ISE").orElse(null);
+            } else if (usn.contains("EC") || usn.contains("ECE")) {
+                department = departmentRepository.findByDepartmentCode("ECE").orElse(null);
+            } else if (usn.contains("ME") || usn.contains("MECH")) {
+                department = departmentRepository.findByDepartmentCode("MECH").orElse(null);
+            }
+            if (department == null) {
+                department = departmentRepository.findByDepartmentCode("CSE")
+                        .orElseGet(() -> departmentRepository.findAll().stream().findFirst()
+                                .orElseThrow(() -> new ResourceNotFoundException("Department", "code", "CSE")));
+            }
+        }
+
+        String fullName = (request.getFullName() != null && !request.getFullName().isBlank())
+                ? request.getFullName().trim()
+                : usn;
 
         User user = new User();
-        user.setFullName(request.getFullName().trim());
+        user.setFullName(fullName);
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setRole("STUDENT");
@@ -85,10 +105,10 @@ public class StudentServiceImpl implements StudentService {
         student.setUser(savedUser);
         student.setDepartment(department);
         student.setUsn(usn);
-        student.setSection(request.getSection() != null ? request.getSection().trim().toUpperCase() : null);
-        student.setCgpa(request.getCgpa());
-        student.setActiveBacklogs(request.getActiveBacklogs());
-        student.setGraduationYear(request.getGraduationYear());
+        student.setSection(request.getSection() != null ? request.getSection().trim().toUpperCase() : "A");
+        student.setCgpa(request.getCgpa() != null ? request.getCgpa() : BigDecimal.ZERO);
+        student.setActiveBacklogs(request.getActiveBacklogs() != null ? request.getActiveBacklogs() : 0);
+        student.setGraduationYear(request.getGraduationYear() != null ? request.getGraduationYear() : 2026);
         student.setPhone(request.getPhone() != null ? request.getPhone().trim() : null);
         student.setResumeUrl(request.getResumeUrl());
         Student savedStudent = studentRepository.save(student);

@@ -33,9 +33,26 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
-        String email = request.getEmail().trim().toLowerCase();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+        String identifier = request.getEmail().trim();
+        
+        // Find user by institutional email or student USN / SR number
+        User user = null;
+        if (identifier.contains("@")) {
+            user = userRepository.findByEmail(identifier.toLowerCase()).orElse(null);
+        } else {
+            Optional<Student> studentOpt = studentRepository.findByUsn(identifier.toUpperCase());
+            if (studentOpt.isPresent()) {
+                user = studentOpt.get().getUser();
+            }
+        }
+
+        // Fallback: check other lookup if initial method returned null
+        if (user == null) {
+            user = userRepository.findByEmail(identifier.toLowerCase())
+                    .orElseGet(() -> studentRepository.findByUsn(identifier.toUpperCase())
+                            .map(Student::getUser)
+                            .orElseThrow(() -> new ResourceNotFoundException("Account", "USN / Email", identifier)));
+        }
 
         if (!user.getIsActive()) {
             throw new BusinessRuleException("Your account is currently deactivated. Please contact the placement cell.");

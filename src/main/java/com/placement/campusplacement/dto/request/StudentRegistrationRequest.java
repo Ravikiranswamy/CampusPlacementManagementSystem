@@ -10,7 +10,6 @@ import java.math.BigDecimal;
  */
 public class StudentRegistrationRequest {
 
-    @NotBlank(message = "Full name is required")
     @Size(max = 100, message = "Full name must not exceed 100 characters")
     private String fullName;
 
@@ -27,22 +26,18 @@ public class StudentRegistrationRequest {
     @Size(max = 20, message = "USN must not exceed 20 characters")
     private String usn;
 
-    @NotNull(message = "Department ID is required")
     private Long departmentId;
 
     @Size(max = 5, message = "Section must not exceed 5 characters")
     private String section;
 
-    @NotNull(message = "CGPA is required")
     @DecimalMin(value = "0.00", message = "CGPA cannot be negative")
     @DecimalMax(value = "10.00", message = "CGPA cannot exceed 10.00")
     private BigDecimal cgpa;
 
-    @NotNull(message = "Active backlogs count is required")
     @Min(value = 0, message = "Active backlogs cannot be negative")
     private Integer activeBacklogs;
 
-    @NotNull(message = "Graduation year is required")
     @Min(value = 2000, message = "Graduation year must be 2000 or later")
     private Integer graduationYear;
 
