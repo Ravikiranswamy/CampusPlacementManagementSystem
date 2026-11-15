@@ -64,9 +64,13 @@ public class GlobalExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
+        String errorMsg = "Validation failed: " + fieldErrors.entrySet().stream()
+                .map(e -> e.getKey() + " (" + e.getValue() + ")")
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("Invalid input");
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error("Validation failed"));
+                .body(ApiResponse.error(errorMsg));
     }
 
     /**

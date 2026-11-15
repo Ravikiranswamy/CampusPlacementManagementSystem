@@ -61,7 +61,7 @@ export default function Login() {
 
     const trimmedIdentifier = identifier.trim()
     if (!trimmedIdentifier) {
-      setError(role === 'student' ? 'Please enter your USN or SR number.' : 'Please enter your institutional email or username.')
+      setError(role === 'student' ? 'Please enter your USN or SR number.' : 'Please enter your email or username.')
       return
     }
     if (!password.trim()) {
@@ -154,7 +154,7 @@ export default function Login() {
             {/* Identifier Field: USN for students, Email for admin/officer */}
             <div className="form-field">
               <label htmlFor="identifier-input">
-                {isStudent ? 'USN / SR Number' : 'Institutional Email / Username'}
+                {isStudent ? 'USN / SR Number' : 'Email / Username'}
               </label>
               <div className="input-container">
                 {isStudent ? (

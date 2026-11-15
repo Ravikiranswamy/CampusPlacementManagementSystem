@@ -45,7 +45,7 @@ export default function Register() {
       return
     }
     if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      setError('Please enter a valid institutional email address.')
+      setError('Please enter a valid email address.')
       return
     }
     if (form.password.length < 6) {
@@ -63,6 +63,11 @@ export default function Register() {
         usn: trimmedUsn,
         email: trimmedEmail,
         password: form.password,
+        fullName: trimmedUsn,
+        departmentId: 1,
+        cgpa: 0.0,
+        activeBacklogs: 0,
+        graduationYear: 2026,
       })
       setSuccess(true)
       setTimeout(() => navigate('/login'), 2500)
@@ -106,7 +111,7 @@ export default function Register() {
         <div className="login-card-inner">
           <h2>Student Registration</h2>
           <p className="login-lead">
-            Enter your official university USN / SR number, institutional email, and set your portal password.
+            Enter your official university USN / SR number, email, and set your portal password.
           </p>
 
           {success ? (
@@ -157,16 +162,16 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Institutional Email */}
+              {/* Email */}
               <div className="form-field">
-                <label htmlFor="reg-email">Institutional Email *</label>
+                <label htmlFor="reg-email">Email *</label>
                 <div className="input-container">
                   <Mail size={17} className="input-icon" />
                   <input
                     id="reg-email"
                     type="email"
                     autoComplete="off"
-                    placeholder="usn@jssstuniv.in or name@example.edu"
+                    placeholder="name@example.com"
                     value={form.email}
                     onChange={set('email')}
                     required

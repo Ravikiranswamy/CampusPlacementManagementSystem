@@ -79,7 +79,7 @@ export default function TeamManagement() {
 
     if (!trimmedName) return setError('Full Name is required.')
     if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      return setError('Please enter a valid institutional email.')
+      return setError('Please enter a valid email address.')
     }
     if (form.password.length < 6) {
       return setError('Password must be at least 6 characters.')
@@ -261,7 +261,7 @@ export default function TeamManagement() {
               <thead>
                 <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#475569', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   <th style={{ padding: '12px 20px' }}>Team Member</th>
-                  <th style={{ padding: '12px 20px' }}>Institutional Email</th>
+                  <th style={{ padding: '12px 20px' }}>Email</th>
                   <th style={{ padding: '12px 20px' }}>Portal Role</th>
                   <th style={{ padding: '12px 20px' }}>Status</th>
                   <th style={{ padding: '12px 20px' }}>Added Date</th>
@@ -372,7 +372,7 @@ export default function TeamManagement() {
 
             <div>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
-                Institutional Email *
+                Email *
               </label>
               <input
                 type="email"
@@ -526,3 +526,4 @@ export default function TeamManagement() {
     </div>
   )
 }
+
