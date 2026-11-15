@@ -8,7 +8,7 @@ import { CheckCircle2, Award, Clock, FileText, Check, X, ExternalLink } from 'lu
 
 export default function ApplicationStatus() {
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [applications, setApplications] = useState([])
   const [selectedAppId, setSelectedAppId] = useState(null)
@@ -19,6 +19,10 @@ export default function ApplicationStatus() {
   const [error, setError] = useState(null)
 
   async function loadData() {
+    if (!studentId) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [appsData, offersData] = await Promise.all([

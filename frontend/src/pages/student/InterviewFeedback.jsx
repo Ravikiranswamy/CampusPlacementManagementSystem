@@ -29,7 +29,7 @@ import {
 export default function InterviewFeedback() {
   const query = usePageQuery()
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [feedbacks, setFeedbacks] = useState([])
   const [companies, setCompanies] = useState([])

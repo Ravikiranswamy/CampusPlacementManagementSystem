@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Briefcase, FileText, BadgeCheck, Send, CheckCircle2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Briefcase, FileText, BadgeCheck, Send, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { api } from '../../api/client.js'
 import DataTable from '../../components/ui/DataTable.jsx'
@@ -12,7 +13,7 @@ import { usePageQuery } from '../../hooks/usePageQuery.js'
 export default function StudentOverview() {
   const query = usePageQuery()
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [student, setStudent] = useState(null)
   const [drives, setDrives] = useState([])
@@ -21,6 +22,10 @@ export default function StudentOverview() {
   const [loading, setLoading] = useState(true)
 
   async function loadData() {
+    if (!studentId) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [studentData, drivesData, appsData, offersData] = await Promise.all([
@@ -45,6 +50,7 @@ export default function StudentOverview() {
   }, [studentId])
 
   async function handleApply(drive) {
+    if (!studentId) return
     try {
       await api.applyForDrive({
         studentId,
@@ -68,8 +74,58 @@ export default function StudentOverview() {
     matchesQuery(query, [app.companyName, app.roleTitle, app.status]),
   )
 
+  const hasCgpa = student?.cgpa != null && Number(student.cgpa) > 0
+
   return (
     <div className="page-stack">
+      {/* Incomplete Profile Alert Prompt */}
+      {!hasCgpa && !loading && (
+        <section
+          style={{
+            background: '#fffbeb',
+            border: '1.5px solid #fef3c7',
+            borderLeft: '5px solid #d97706',
+            borderRadius: '10px',
+            padding: '14px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            flexWrap: 'wrap',
+          }}
+          aria-label="Profile incomplete notice"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <AlertTriangle size={24} color="#d97706" style={{ flexShrink: 0 }} />
+            <div>
+              <strong style={{ color: '#92400e', fontSize: '0.96rem' }}>Profile Incomplete</strong>
+              <p style={{ margin: '2px 0 0', color: '#b45309', fontSize: '0.85rem' }}>
+                You haven&apos;t entered your academic metrics (CGPA, department, semester marksheets). Update your profile to participate in automated drive eligibility checks.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/student/profile"
+            style={{
+              background: '#0b1f3a',
+              color: '#ffffff',
+              textDecoration: 'none',
+              padding: '8px 16px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              borderRadius: '6px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span>Update Profile Now</span>
+            <ArrowRight size={14} />
+          </Link>
+        </section>
+      )}
+
       {/* KPI Cards */}
       <section className="stat-grid" aria-label="Student placement summary">
         <StatCard
@@ -87,8 +143,8 @@ export default function StudentOverview() {
         <StatCard
           icon={BadgeCheck}
           label="Academic Standing"
-          value={`CGPA ${student?.cgpa || '8.75'}`}
-          hint={`${student?.activeBacklogs ?? 0} active backlogs`}
+          value={hasCgpa ? `CGPA ${Number(student.cgpa).toFixed(2)}` : 'Not Updated'}
+          hint={hasCgpa ? `${student.activeBacklogs ?? 0} active backlogs` : 'Pending profile update'}
         />
         <StatCard
           icon={Send}
@@ -103,7 +159,7 @@ export default function StudentOverview() {
         <div className="panel-head">
           <h2>Active Placement Drives</h2>
           <p style={{ color: 'var(--color-muted)' }}>
-            Recruitment drives accepting applications from the 2027 graduating batch.
+            Recruitment drives accepting applications from the {student?.graduationYear || new Date().getFullYear()} graduating batch.
           </p>
         </div>
         <DataTable

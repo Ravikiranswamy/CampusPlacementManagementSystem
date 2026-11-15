@@ -10,7 +10,7 @@ import { CheckCircle2, XCircle, AlertTriangle, Briefcase } from 'lucide-react'
 export default function Eligibility() {
   const query = usePageQuery()
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [student, setStudent] = useState(null)
   const [drivesWithEligibility, setDrivesWithEligibility] = useState([])
@@ -19,6 +19,10 @@ export default function Eligibility() {
   const [error, setError] = useState(null)
 
   async function loadData() {
+    if (!studentId) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [studentData, drivesData, appsData] = await Promise.all([
@@ -100,13 +104,13 @@ export default function Eligibility() {
 
       {/* Student Academic Standing Banner */}
       <section className="panel" style={{ background: '#f8fafc', borderLeft: '4px solid var(--color-primary)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '1.1rem' }}>
               Academic Standing for {student?.fullName || session?.name}
             </h3>
             <p style={{ margin: '0.25rem 0 0', color: 'var(--color-muted)', fontSize: '0.9rem' }}>
-              Department: <strong>{student?.departmentCode || 'CSE'}</strong> • CGPA: <strong>{student?.cgpa || '0.00'}</strong> • Active Backlogs: <strong>{student?.activeBacklogs ?? 0}</strong> • Graduating: <strong>{student?.graduationYear || 2027}</strong>
+              Department: <strong>{student?.departmentCode || 'Not Assigned'}</strong> • CGPA: <strong>{student?.cgpa != null && Number(student.cgpa) > 0 ? Number(student.cgpa).toFixed(2) : 'Not Updated'}</strong> • Active Backlogs: <strong>{student?.activeBacklogs !== null && student?.activeBacklogs !== undefined ? student.activeBacklogs : '—'}</strong> • Graduating: <strong>{student?.graduationYear || '—'}</strong>
             </p>
           </div>
           <span style={{ fontSize: '0.85rem', color: '#047857', background: '#ecfdf5', padding: '0.35rem 0.75rem', borderRadius: '20px', fontWeight: 600 }}>

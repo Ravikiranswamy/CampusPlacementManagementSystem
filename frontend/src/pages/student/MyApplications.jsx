@@ -12,7 +12,7 @@ import { CheckCircle, AlertCircle, XCircle } from 'lucide-react'
 export default function MyApplications() {
   const query = usePageQuery()
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
@@ -20,6 +20,10 @@ export default function MyApplications() {
   const [statusFilter, setStatusFilter] = useState('all')
 
   async function loadData() {
+    if (!studentId) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const data = await api.getStudentApplications(studentId)

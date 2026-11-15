@@ -24,7 +24,7 @@ import {
 export default function PlacementDrives() {
   const query = usePageQuery()
   const { session } = useAuth()
-  const studentId = session?.studentId || 1
+  const studentId = session?.studentId
 
   const [activeTab, setActiveTab] = useState('eligible') // 'eligible' | 'others' | 'registered'
   const [student, setStudent] = useState(null)
@@ -40,6 +40,10 @@ export default function PlacementDrives() {
   const [searchQuery, setSearchQuery] = useState('')
 
   async function loadData() {
+    if (!studentId) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [studentData, drivesData, appsData] = await Promise.all([

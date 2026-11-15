@@ -128,6 +128,12 @@ public class StudentServiceImpl implements StudentService {
             userRepository.save(student.getUser());
         }
 
+        if (request.getDepartmentId() != null) {
+            Department dept = departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Department", "id", request.getDepartmentId()));
+            student.setDepartment(dept);
+        }
+
         if (request.getSection() != null) {
             student.setSection(request.getSection().trim().toUpperCase());
         }
@@ -146,6 +152,40 @@ public class StudentServiceImpl implements StudentService {
         if (request.getResumeUrl() != null) {
             student.setResumeUrl(request.getResumeUrl().trim());
         }
+
+        if (request.getSscPercentage() != null) {
+            student.setSscPercentage(request.getSscPercentage());
+        }
+        if (request.getHscPercentage() != null) {
+            student.setHscPercentage(request.getHscPercentage());
+        }
+        if (request.getAdmissionQuota() != null) {
+            student.setAdmissionQuota(request.getAdmissionQuota().trim());
+        }
+        if (request.getEntranceRank() != null) {
+            student.setEntranceRank(request.getEntranceRank());
+        }
+        if (request.getGapYears() != null) {
+            student.setGapYears(request.getGapYears());
+        }
+        if (request.getHistoryBacklogs() != null) {
+            student.setHistoryBacklogs(request.getHistoryBacklogs());
+        }
+
+        if (request.getSem1Sgpa() != null) student.setSem1Sgpa(request.getSem1Sgpa());
+        if (request.getSem2Sgpa() != null) student.setSem2Sgpa(request.getSem2Sgpa());
+        if (request.getSem3Sgpa() != null) student.setSem3Sgpa(request.getSem3Sgpa());
+        if (request.getSem4Sgpa() != null) student.setSem4Sgpa(request.getSem4Sgpa());
+        if (request.getSem5Sgpa() != null) student.setSem5Sgpa(request.getSem5Sgpa());
+        if (request.getSem6Sgpa() != null) student.setSem6Sgpa(request.getSem6Sgpa());
+        if (request.getSem7Sgpa() != null) student.setSem7Sgpa(request.getSem7Sgpa());
+        if (request.getSem8Sgpa() != null) student.setSem8Sgpa(request.getSem8Sgpa());
+
+        if (request.getGender() != null) student.setGender(request.getGender().trim());
+        if (request.getDateOfBirth() != null) student.setDateOfBirth(request.getDateOfBirth());
+        if (request.getNativePlace() != null) student.setNativePlace(request.getNativePlace().trim());
+        if (request.getParentName() != null) student.setParentName(request.getParentName().trim());
+        if (request.getPermanentAddress() != null) student.setPermanentAddress(request.getPermanentAddress().trim());
 
         Student updated = studentRepository.save(student);
         return mapToResponse(updated);
