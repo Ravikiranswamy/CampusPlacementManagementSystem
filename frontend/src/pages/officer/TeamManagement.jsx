@@ -141,7 +141,9 @@ export default function TeamManagement() {
   function copyCredentials() {
     if (!handoverData) return
     const text = `Campus Placement Platform Credentials:\nPortal: ${handoverData.role}\nEmail: ${handoverData.email}\nPassword: ${handoverData.password}\nLogin URL: ${window.location.origin}/login`
-    navigator.clipboard.writeText(text)
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {})
+    }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -286,7 +288,7 @@ export default function TeamManagement() {
                       </span>
                     </td>
                     <td style={{ padding: '14px 20px' }}>
-                      <StatusBadge status={m.isActive ? 'ACTIVE' : 'INACTIVE'} />
+                      <StatusBadge value={m.isActive ? 'Active' : 'Inactive'} />
                     </td>
                     <td style={{ padding: '14px 20px', color: '#64748b', fontSize: '0.82rem' }}>
                       {m.createdAt ? new Date(m.createdAt).toLocaleDateString() : 'N/A'}

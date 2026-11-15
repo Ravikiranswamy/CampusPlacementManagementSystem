@@ -1,4 +1,5 @@
-export default function StatusBadge({ value }) {
-  const tone = value.toLowerCase().replace(/\s+/g, '-')
-  return <span className={`status status-${tone}`}>{value}</span>
+export default function StatusBadge({ value, status }) {
+  const text = value ?? status ?? 'N/A'
+  const tone = String(text).toLowerCase().replace(/\s+/g, '-')
+  return <span className={`status status-${tone}`}>{text}</span>
 }
