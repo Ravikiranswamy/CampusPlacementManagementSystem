@@ -20,7 +20,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
-  AlertTriangle,
   Loader2,
   Save,
   Check,
@@ -294,54 +293,6 @@ export default function StudentProfile() {
         <div className="banner banner-error" style={{ padding: '0.75rem 1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '6px' }}>
           {error}
         </div>
-      )}
-
-      {/* Profile Incomplete Notification Banner */}
-      {!hasCgpa && (
-        <section
-          style={{
-            background: '#fffbeb',
-            border: '1.5px solid #fef3c7',
-            borderLeft: '5px solid #d97706',
-            borderRadius: '10px',
-            padding: '14px 18px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <AlertTriangle size={24} color="#d97706" style={{ flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#92400e', fontSize: '0.96rem' }}>Profile Incomplete</strong>
-              <p style={{ margin: '2px 0 0', color: '#b45309', fontSize: '0.85rem' }}>
-                Please enter your academic metrics (CGPA, department, semester SGPAs) and contact details. You can re-edit anytime.
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={openUpdateModal}
-            style={{
-              background: '#0b1f3a',
-              color: '#ffffff',
-              padding: '8px 16px',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            <Edit3 size={14} /> Update Profile Now
-          </button>
-        </section>
       )}
 
       {/* Top Controls Bar */}
