@@ -10,3 +10,4 @@ public interface InterviewFeedbackService {
     InterviewFeedbackResponse getFeedbackById(Long id);
     InterviewFeedbackResponse submitFeedback(InterviewFeedbackRequest request);
 }
+

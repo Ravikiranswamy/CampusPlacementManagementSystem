@@ -12,6 +12,7 @@ import Register from './pages/Register.jsx'
 import ApplicationStatus from './pages/student/ApplicationStatus.jsx'
 import Eligibility from './pages/student/Eligibility.jsx'
 import InterviewFeedback from './pages/student/InterviewFeedback.jsx'
+import JobDescriptions from './pages/student/JobDescriptions.jsx'
 import MyApplications from './pages/student/MyApplications.jsx'
 import PlacementDrives from './pages/student/PlacementDrives.jsx'
 import StudentOverview from './pages/student/StudentOverview.jsx'
@@ -58,6 +59,7 @@ function AppRoutes() {
         <Route path="/student/eligibility" element={<Eligibility />} />
         <Route path="/student/applications" element={<MyApplications />} />
         <Route path="/student/status" element={<ApplicationStatus />} />
+        <Route path="/student/jds" element={<JobDescriptions />} />
         <Route path="/student/feedback" element={<InterviewFeedback />} />
         <Route path="/student/faq" element={<Faq />} />
       </Route>

@@ -346,6 +346,43 @@ export default function PlacementDrives() {
                     </div>
                   )}
 
+                  {/* JD Attachments Strip */}
+                  {(drive.jd1Url || drive.jd2Url || drive.jd3Url) && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Attachments:</span>
+                      {drive.jd1Url && (
+                        <a
+                          href={drive.jd1Url.startsWith('http') ? drive.jd1Url : `https://${drive.jd1Url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}
+                        >
+                          📄 JD 1
+                        </a>
+                      )}
+                      {drive.jd2Url && (
+                        <a
+                          href={drive.jd2Url.startsWith('http') ? drive.jd2Url : `https://${drive.jd2Url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}
+                        >
+                          📄 JD 2
+                        </a>
+                      )}
+                      {drive.jd3Url && (
+                        <a
+                          href={drive.jd3Url.startsWith('http') ? drive.jd3Url : `https://${drive.jd3Url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}
+                        >
+                          📄 JD 3
+                        </a>
+                      )}
+                    </div>
+                  )}
+
                   {/* Card Footer with Deadlines and Actions */}
                   <div className="drive-card-footer">
                     <div className="drive-deadlines">

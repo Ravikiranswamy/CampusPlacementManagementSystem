@@ -76,3 +76,4 @@ public class InterviewFeedbackResponse {
     public void setValuableTips(String valuableTips) { this.valuableTips = valuableTips; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
+

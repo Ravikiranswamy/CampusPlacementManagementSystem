@@ -19,6 +19,10 @@ public class PlacementDriveResponse {
     private LocalDate driveDate;
     private String status;
     private String description;
+    private String jd1Url;
+    private String jd2Url;
+    private String jd3Url;
+    private BigDecimal stipendMonthly;
     private Long createdByUserId;
     private String createdByUserName;
     private LocalDateTime createdAt;
@@ -39,6 +43,10 @@ public class PlacementDriveResponse {
     public LocalDate getDriveDate()                    { return driveDate; }
     public String getStatus()                          { return status; }
     public String getDescription()                     { return description; }
+    public String getJd1Url()                          { return jd1Url; }
+    public String getJd2Url()                          { return jd2Url; }
+    public String getJd3Url()                          { return jd3Url; }
+    public BigDecimal getStipendMonthly()              { return stipendMonthly; }
     public Long getCreatedByUserId()                   { return createdByUserId; }
     public String getCreatedByUserName()               { return createdByUserName; }
     public LocalDateTime getCreatedAt()                { return createdAt; }
@@ -57,6 +65,10 @@ public class PlacementDriveResponse {
     public void setDriveDate(LocalDate driveDate)                                  { this.driveDate = driveDate; }
     public void setStatus(String status)                                           { this.status = status; }
     public void setDescription(String description)                                 { this.description = description; }
+    public void setJd1Url(String jd1Url)                                           { this.jd1Url = jd1Url; }
+    public void setJd2Url(String jd2Url)                                           { this.jd2Url = jd2Url; }
+    public void setJd3Url(String jd3Url)                                           { this.jd3Url = jd3Url; }
+    public void setStipendMonthly(BigDecimal stipendMonthly)                       { this.stipendMonthly = stipendMonthly; }
     public void setCreatedByUserId(Long createdByUserId)                           { this.createdByUserId = createdByUserId; }
     public void setCreatedByUserName(String createdByUserName)                     { this.createdByUserName = createdByUserName; }
     public void setCreatedAt(LocalDateTime createdAt)                             { this.createdAt = createdAt; }

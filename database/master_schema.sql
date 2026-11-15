@@ -108,6 +108,10 @@ CREATE TABLE IF NOT EXISTS placement_drives (
     status VARCHAR(20) NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT', 'PUBLISHED', 'CLOSED', 'CANCELLED')),
     created_by BIGINT NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT,
     description TEXT,
+    jd1_url VARCHAR(500),
+    jd2_url VARCHAR(500),
+    jd3_url VARCHAR(500),
+    stipend_monthly NUMERIC(8,2),
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT chk_deadline_before_drive CHECK (registration_deadline::date <= drive_date)
 );

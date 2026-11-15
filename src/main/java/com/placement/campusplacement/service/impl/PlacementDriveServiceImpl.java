@@ -98,6 +98,10 @@ public class PlacementDriveServiceImpl implements PlacementDriveService {
         drive.setDriveDate(request.getDriveDate());
         drive.setStatus("DRAFT");
         drive.setDescription(request.getDescription());
+        drive.setJd1Url(request.getJd1Url());
+        drive.setJd2Url(request.getJd2Url());
+        drive.setJd3Url(request.getJd3Url());
+        drive.setStipendMonthly(request.getStipendMonthly());
         drive.setCreatedBy(creator);
         PlacementDrive savedDrive = driveRepository.save(drive);
 
@@ -148,6 +152,18 @@ public class PlacementDriveServiceImpl implements PlacementDriveService {
         if (request.getDescription() != null) {
             drive.setDescription(request.getDescription());
         }
+        if (request.getJd1Url() != null) {
+            drive.setJd1Url(request.getJd1Url());
+        }
+        if (request.getJd2Url() != null) {
+            drive.setJd2Url(request.getJd2Url());
+        }
+        if (request.getJd3Url() != null) {
+            drive.setJd3Url(request.getJd3Url());
+        }
+        if (request.getStipendMonthly() != null) {
+            drive.setStipendMonthly(request.getStipendMonthly());
+        }
 
         PlacementDrive updated = driveRepository.save(drive);
         return mapToResponse(updated);
@@ -184,6 +200,10 @@ public class PlacementDriveServiceImpl implements PlacementDriveService {
         res.setDriveDate(drive.getDriveDate());
         res.setStatus(drive.getStatus());
         res.setDescription(drive.getDescription());
+        res.setJd1Url(drive.getJd1Url());
+        res.setJd2Url(drive.getJd2Url());
+        res.setJd3Url(drive.getJd3Url());
+        res.setStipendMonthly(drive.getStipendMonthly());
         res.setCreatedByUserId(drive.getCreatedBy().getUserId());
         res.setCreatedByUserName(drive.getCreatedBy().getFullName());
         res.setCreatedAt(drive.getCreatedAt());

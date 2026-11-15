@@ -24,3 +24,4 @@ public interface InterviewFeedbackRepository extends JpaRepository<InterviewFeed
 
     List<InterviewFeedback> findByStudentStudentId(Long studentId);
 }
+

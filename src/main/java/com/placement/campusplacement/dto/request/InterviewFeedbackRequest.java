@@ -83,3 +83,4 @@ public class InterviewFeedbackRequest {
     public void setTopicsCovered(String topicsCovered) { this.topicsCovered = topicsCovered; }
     public void setValuableTips(String valuableTips) { this.valuableTips = valuableTips; }
 }
+

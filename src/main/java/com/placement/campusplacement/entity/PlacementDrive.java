@@ -1,6 +1,7 @@
 package com.placement.campusplacement.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -48,6 +49,18 @@ public class PlacementDrive {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "jd1_url", length = 500)
+    private String jd1Url;
+
+    @Column(name = "jd2_url", length = 500)
+    private String jd2Url;
+
+    @Column(name = "jd3_url", length = 500)
+    private String jd3Url;
+
+    @Column(name = "stipend_monthly", precision = 8, scale = 2)
+    private BigDecimal stipendMonthly;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -70,6 +83,10 @@ public class PlacementDrive {
     public String getStatus()                          { return status; }
     public User getCreatedBy()                         { return createdBy; }
     public String getDescription()                     { return description; }
+    public String getJd1Url()                          { return jd1Url; }
+    public String getJd2Url()                          { return jd2Url; }
+    public String getJd3Url()                          { return jd3Url; }
+    public BigDecimal getStipendMonthly()              { return stipendMonthly; }
     public LocalDateTime getCreatedAt()                { return createdAt; }
     public DriveEligibility getEligibility()           { return eligibility; }
 
@@ -82,6 +99,10 @@ public class PlacementDrive {
     public void setStatus(String status)                                   { this.status = status; }
     public void setCreatedBy(User createdBy)                               { this.createdBy = createdBy; }
     public void setDescription(String description)                         { this.description = description; }
+    public void setJd1Url(String jd1Url)                                   { this.jd1Url = jd1Url; }
+    public void setJd2Url(String jd2Url)                                   { this.jd2Url = jd2Url; }
+    public void setJd3Url(String jd3Url)                                   { this.jd3Url = jd3Url; }
+    public void setStipendMonthly(BigDecimal stipendMonthly)               { this.stipendMonthly = stipendMonthly; }
     public void setCreatedAt(LocalDateTime createdAt)                     { this.createdAt = createdAt; }
     public void setEligibility(DriveEligibility eligibility)               { this.eligibility = eligibility; }
 }
