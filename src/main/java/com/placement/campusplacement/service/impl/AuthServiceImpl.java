@@ -58,21 +58,11 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessRuleException("Your account is currently deactivated. Please contact the placement cell.");
         }
 
-        // Support standard BCrypt comparison, with fallback for demo seed accounts
-        boolean passwordMatches = false;
-        try {
-            passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPasswordHash());
-        } catch (Exception ignored) {}
+        // BCrypt password verification
+        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPasswordHash());
 
         if (!passwordMatches) {
-            String hash = user.getPasswordHash();
-            if (hash != null && (hash.startsWith("DEMO_HASH") || "password123".equals(request.getPassword()))) {
-                passwordMatches = "password123".equals(request.getPassword()) || request.getPassword().length() >= 6;
-            }
-        }
-
-        if (!passwordMatches) {
-            throw new BusinessRuleException("Invalid email or password.");
+            throw new BusinessRuleException("Invalid credentials. Please check your password.");
         }
 
         Long studentId = null;
