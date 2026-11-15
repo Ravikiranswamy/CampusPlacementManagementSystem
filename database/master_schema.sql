@@ -389,3 +389,33 @@ BEGIN
 END;
 $$;
 
+-- ============================================================================
+-- 17. INTERVIEW EXPERIENCES & PAST RECRUITMENT FEEDBACK
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS interview_feedbacks (
+    feedback_id BIGSERIAL PRIMARY KEY,
+    student_id BIGINT NOT NULL REFERENCES students(student_id) ON DELETE CASCADE,
+    company_id BIGINT REFERENCES companies(company_id) ON DELETE SET NULL,
+    company_name VARCHAR(150) NOT NULL,
+    role_title VARCHAR(150) NOT NULL,
+    location VARCHAR(100),
+    graduation_year INT NOT NULL,
+    interview_mode VARCHAR(20) NOT NULL DEFAULT 'Online' CHECK (interview_mode IN ('Online', 'Offline', 'Hybrid')),
+    package_ctc NUMERIC(6,2),
+    base_pay NUMERIC(6,2),
+    stipend_monthly NUMERIC(8,2),
+    coding_rating INT CHECK (coding_rating BETWEEN 1 AND 5),
+    interview_rating INT CHECK (interview_rating BETWEEN 1 AND 5),
+    overall_rating INT CHECK (overall_rating BETWEEN 1 AND 5),
+    technical_round_desc TEXT,
+    hr_round_desc TEXT,
+    topics_covered TEXT,
+    valuable_tips TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_feedback_company ON interview_feedbacks(company_id);
+CREATE INDEX IF NOT EXISTS idx_feedback_student ON interview_feedbacks(student_id);
+CREATE INDEX IF NOT EXISTS idx_feedback_year ON interview_feedbacks(graduation_year);
+
+

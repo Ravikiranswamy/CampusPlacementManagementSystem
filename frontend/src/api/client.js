@@ -142,5 +142,16 @@ export const api = {
   // Analytical Reports
   getPlacementStats: () => request('/reports/placement-stats'),
   getPackageStats: () => request('/reports/package-stats'),
+
+  // Interview Experiences & Feedback
+  getFeedbacks: (params = {}) => {
+    const q = new URLSearchParams()
+    if (params.company) q.append('company', params.company)
+    if (params.year) q.append('year', params.year)
+    const qs = q.toString()
+    return request(`/feedbacks${qs ? `?${qs}` : ''}`)
+  },
+  getFeedbackById: (id) => request(`/feedbacks/${id}`),
+  submitFeedback: (data) => request('/feedbacks', { method: 'POST', body: data }),
 }
 
