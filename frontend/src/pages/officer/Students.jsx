@@ -244,10 +244,10 @@ export default function Students() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" className="btn" onClick={() => setBlockingStudent(null)}>
+              <button type="button" className="secondary-button" onClick={() => setBlockingStudent(null)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" style={{ background: '#dc2626', borderColor: '#dc2626' }} disabled={actionLoading}>
+              <button type="submit" className="primary-button" style={{ background: '#dc2626', borderColor: '#dc2626' }} disabled={actionLoading}>
                 {actionLoading ? 'Applying...' : 'Confirm Restriction'}
               </button>
             </div>

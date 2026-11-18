@@ -112,7 +112,7 @@ export default function Offers() {
             />
             <button
               type="button"
-              className="btn btn-primary"
+              className="primary-button compact"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.4rem 0.85rem' }}
               onClick={() => setIsIssueModalOpen(true)}
             >
@@ -280,10 +280,10 @@ export default function Offers() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" className="btn" onClick={() => setIsIssueModalOpen(false)}>
+              <button type="button" className="secondary-button" onClick={() => setIsIssueModalOpen(false)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={actionLoading}>
+              <button type="submit" className="primary-button" disabled={actionLoading}>
                 {actionLoading ? 'Issuing...' : 'Issue Offer Letter'}
               </button>
             </div>

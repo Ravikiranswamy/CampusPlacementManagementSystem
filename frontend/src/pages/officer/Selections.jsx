@@ -121,7 +121,7 @@ export default function Selections() {
                 render: (row) => (
                   <button
                     type="button"
-                    className="btn"
+                    className="action-button"
                     style={{ padding: '0.25rem 0.65rem', fontSize: '0.8rem' }}
                     onClick={() => {
                       setEditingApp(row)
@@ -178,10 +178,10 @@ export default function Selections() {
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <button type="button" className="btn" onClick={() => setEditingApp(null)}>
+              <button type="button" className="secondary-button" onClick={() => setEditingApp(null)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={actionLoading}>
+              <button type="submit" className="primary-button" disabled={actionLoading}>
                 {actionLoading ? 'Updating...' : 'Update Application'}
               </button>
             </div>
