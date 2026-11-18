@@ -356,7 +356,7 @@ export default function PlacementDrives() {
                       <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Attachments:</span>
                       {drive.jd1Url && (
                         <a
-                          href={drive.jd1Url.startsWith('http') ? drive.jd1Url : `https://${drive.jd1Url}`}
+                          href={drive.jd1Url.startsWith('http') ? drive.jd1Url : (drive.jd1Url.startsWith('/') ? drive.jd1Url : `https://${drive.jd1Url}`)}
                           target="_blank"
                           rel="noreferrer"
                           style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}
@@ -366,7 +366,7 @@ export default function PlacementDrives() {
                       )}
                       {drive.jd2Url && (
                         <a
-                          href={drive.jd2Url.startsWith('http') ? drive.jd2Url : `https://${drive.jd2Url}`}
+                          href={drive.jd2Url.startsWith('http') ? drive.jd2Url : (drive.jd2Url.startsWith('/') ? drive.jd2Url : `https://${drive.jd2Url}`)}
                           target="_blank"
                           rel="noreferrer"
                           style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}
@@ -376,7 +376,7 @@ export default function PlacementDrives() {
                       )}
                       {drive.jd3Url && (
                         <a
-                          href={drive.jd3Url.startsWith('http') ? drive.jd3Url : `https://${drive.jd3Url}`}
+                          href={drive.jd3Url.startsWith('http') ? drive.jd3Url : (drive.jd3Url.startsWith('/') ? drive.jd3Url : `https://${drive.jd3Url}`)}
                           target="_blank"
                           rel="noreferrer"
                           style={{ fontSize: '0.76rem', color: '#1d4ed8', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '4px', textDecoration: 'none', fontWeight: 600 }}

@@ -86,7 +86,7 @@ export default function JobDescriptions() {
       )
     }
 
-    const targetUrl = url.startsWith('http') ? url : `https://${url}`
+    const targetUrl = url.startsWith('http') ? url : (url.startsWith('/') ? url : `https://${url}`)
 
     return (
       <a

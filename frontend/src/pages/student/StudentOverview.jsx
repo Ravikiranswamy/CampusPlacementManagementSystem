@@ -564,7 +564,7 @@ export default function StudentOverview() {
                           <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569' }}>JDs:</span>
                           {drive.jd1Url && (
                             <a
-                              href={drive.jd1Url.startsWith('http') ? drive.jd1Url : `https://${drive.jd1Url}`}
+                              href={drive.jd1Url.startsWith('http') ? drive.jd1Url : (drive.jd1Url.startsWith('/') ? drive.jd1Url : `https://${drive.jd1Url}`)}
                               target="_blank"
                               rel="noreferrer"
                               style={{
@@ -583,7 +583,7 @@ export default function StudentOverview() {
                           )}
                           {drive.jd2Url && (
                             <a
-                              href={drive.jd2Url.startsWith('http') ? drive.jd2Url : `https://${drive.jd2Url}`}
+                              href={drive.jd2Url.startsWith('http') ? drive.jd2Url : (drive.jd2Url.startsWith('/') ? drive.jd2Url : `https://${drive.jd2Url}`)}
                               target="_blank"
                               rel="noreferrer"
                               style={{
@@ -602,7 +602,7 @@ export default function StudentOverview() {
                           )}
                           {drive.jd3Url && (
                             <a
-                              href={drive.jd3Url.startsWith('http') ? drive.jd3Url : `https://${drive.jd3Url}`}
+                              href={drive.jd3Url.startsWith('http') ? drive.jd3Url : (drive.jd3Url.startsWith('/') ? drive.jd3Url : `https://${drive.jd3Url}`)}
                               target="_blank"
                               rel="noreferrer"
                               style={{
